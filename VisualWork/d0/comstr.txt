@@ -1,0 +1,1 @@
+/C "C:\src17\VisualTesting\VisualTest2\..\visualapp\visual\jre\bin\java -jar C:\src17\VisualTesting\VisualTest2\..\visualapp\visual\content\visual_headless.jar --headless C:\src17\VisualTesting\VisualTest2\..\VisualWork\d0/source.s C:\src17\VisualTesting\VisualTest2\..\VisualWork\d0/visoutput.log --cycles --regs --syntax --runtime --mode:all  --meminstsize:0x1000  >nul 2>&1"
