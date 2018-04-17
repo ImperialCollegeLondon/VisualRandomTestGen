@@ -72,7 +72,7 @@ module VRandom =
             then int32 (uiAllRand())
             else (uiRangeRand(0u, uRange)() |> int32) + iMin
 
-    type RegBound = Lim of string * uint32 * uint32 | Val of string * uint32
+    type RegBound = Lim of string * uint32 * uint32 | Val of string * uint32 | DPB of string
 
     type TestCode = 
         | FORALL of TestCode list 
@@ -82,17 +82,56 @@ module VRandom =
 
     let addBounds rbl (s, rbl') = s, (rbl @ rbl')
 
-    let returnInitRegVal reg rbl =
-        let minMax = (UInt32.MinValue,UInt32.MaxValue)
-        let resolve (umin,umax) = 
-            function | Lim(r,a,b) when r = reg -> max umin a, min umax b 
-                     | Val(r,n) when r = reg && umin <= n && umax >= n  -> (n,n)
-                     | Val(r,n) -> failwithf "Inconsistent register value (%d) for %s" n reg
-                     | _ -> (umin,umax)
+    /// Selected random 32 bit integers good for exploring corner cases of DP instructions
+    /// n determines how tightly numbers focus on corners (+/- n each corner)
+    let dpRand (n:int) =
+        let large = 0x80000000u
+        let un = n |> uint32
+        let u = uniformRan(
+                    [
+                      iRangeRand(-n,n) >> uint32
+                      uiRangeRand(large - un, large + un)
+                    ])
+        fun () -> u()()
 
-        let (umin,umax) = List.fold resolve minMax rbl
-        reg, uiRangeRand(umin,umax)
-   
+
+    let returnInitRegVal reg rbl =
+        let minMax = (false, UInt32.MinValue,UInt32.MaxValue)
+        let resolve (isDP, umin, umax) = 
+            function | Lim(r,a,b) when r = reg -> isDP, max umin a, min umax b 
+                     | Val(r,n) when r = reg && umin <= n && umax >= n  -> (isDP, n, n)
+                     | Val(r,n) -> failwithf "Inconsistent register value (%d) for %s" n reg
+                     | DPB r -> true, umin, umax
+                     | _ -> (isDP, umin,umax)
+
+        let (isDP, umin,umax) = List.fold resolve minMax rbl
+        match isDP with
+        | false -> uiRangeRand(umin,umax)()
+        | true when umax < 33u -> uiRangeRand(umin,umax)()
+        | true -> (dpRand 4)()
+
+    let createDPath (rbl: RegBound list) =
+        let randTF() = 
+            match randomT.Next(2) with 
+            | 0 -> false 
+            | _ -> true 
+
+        let regs =
+            [0..14]
+            |> List.map (fun n -> sprintf "R%d" n)
+            |> List.map (fun reg -> (returnInitRegVal reg rbl))
+
+        let nz = randomT.Next(3)
+        {
+            TRegs = regs
+            TFlags = 
+                {
+                    FC=randTF() ; 
+                    FN = nz = 2 ; 
+                    FV =randTF() ; 
+                    FZ = nz = 1}
+        }
+
 
     let rec Eval (tc:TestCode): ((Unit->string) * RegBound list) list =
         match tc with
@@ -108,6 +147,7 @@ module VRandom =
         tcl 
         |> List.map Eval 
         |> List.fold join1 [(fun ()->""),[]]
+        |> List.map (fun (fs,rbl) -> createDPath rbl, fs())
 
 
 
@@ -118,17 +158,6 @@ module VRandom =
  //
  //--------------------------------------------------------------------------------
 
-    /// Selected random 32 bit integers good for exploring corner cases of DP instructions
-    /// n determines how tightly numbers focus on corners (+/- n each corner)
-    let dpRand (n:int) =
-        let large = 0x80000000u
-        let un = n |> uint32
-        let u = uniformRan(
-                    [
-                      iRangeRand(-n,n) >> uint32
-                      uiRangeRand(large - un, large + un)
-                    ])
-        fun () -> u()()
         
     /// op-codes for 3 operand instructions to test
 
