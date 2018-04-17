@@ -9,6 +9,7 @@ Debug
 obj
 bin
 *.exe
+!.paket/paket.exe
 
 
 ### Linux ###

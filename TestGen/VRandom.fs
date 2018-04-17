@@ -72,6 +72,54 @@ module VRandom =
             then int32 (uiAllRand())
             else (uiRangeRand(0u, uRange)() |> int32) + iMin
 
+    type RegBound = Lim of string * uint32 * uint32 | Val of string * uint32
+
+    type TestCode = 
+        | FORALL of TestCode list 
+        | BOUNDED of TestCode * RegBound list
+        | RAND of (Unit->string)
+        | S of string
+
+    let addBounds rbl (s, rbl') = s, (rbl @ rbl')
+
+    let returnInitRegVal reg rbl =
+        let minMax = (UInt32.MinValue,UInt32.MaxValue)
+        let resolve (umin,umax) = 
+            function | Lim(r,a,b) when r = reg -> max umin a, min umax b 
+                     | Val(r,n) when r = reg && umin <= n && umax >= n  -> (n,n)
+                     | Val(r,n) -> failwithf "Inconsistent register value (%d) for %s" n reg
+                     | _ -> (umin,umax)
+
+        let (umin,umax) = List.fold resolve minMax rbl
+        reg, uiRangeRand(umin,umax)
+   
+
+    let rec Eval (tc:TestCode): ((Unit->string) * RegBound list) list =
+        match tc with
+        | FORALL lis -> lis |> List.collect Eval 
+        | BOUNDED (tc, rbl) -> tc |> Eval |> List.map (addBounds rbl)
+        | RAND f -> [f , []]
+        | S s -> [(fun () -> s) , []]
+
+    let joinTests (tcl: TestCode list) = 
+        let join1 st lis = 
+            List.allPairs st lis 
+            |> List.map (fun ((s1, rbl1),(s2,rbl2)) -> (fun () -> s1()+s2()), rbl1 @ rbl2)
+        tcl 
+        |> List.map Eval 
+        |> List.fold join1 [(fun ()->""),[]]
+
+
+
+
+ //--------------------------------------------------------------------------------
+ //
+ //                   CODE FOR ARM INSTRUCTION GENERATION
+ //
+ //--------------------------------------------------------------------------------
+
+    /// Selected random 32 bit integers good for exploring corner cases of DP instructions
+    /// n determines how tightly numbers focus on corners (+/- n each corner)
     let dpRand (n:int) =
         let large = 0x80000000u
         let un = n |> uint32
@@ -82,6 +130,7 @@ module VRandom =
                     ])
         fun () -> u()()
         
+    /// op-codes for 3 operand instructions to test
 
     let dp3OpC = 
         uniformRan [ 
@@ -89,12 +138,16 @@ module VRandom =
             "AND";"EOR";"BIC";"ORR" ; "ADDS"; 
             "ADCS"; "SBCS"; "RSBS"; "RSCS" ; "ANDS"; "EORS" ; "BICS"
         ]
-    
+
+    /// op-codes for 2 operand instructions to test    
     let dp2OpC =
         uniformRan [ "MOV"; "MVN"; "TST"; "TEQ"; "CMN"; "MOVS"; "MVNS" ]
-    
+
+    /// shift operands (without RRX) to test  
     let shiftOp = uniformRan [ "" ; "ASR" ; "LSR" ; "LSL" ; "ROR" ]
 
+
+    /// generate a random DP immediate constant that is mostly of valid form
     let immediate() =
         let mask = (uint32 ((1L<<<32) - 1L))
         let rot (k:uint32) (n:int) = ((k >>> n) ||| (k <<< ((32-2*n)%32))) &&& mask
@@ -107,7 +160,7 @@ module VRandom =
         | _ -> imm
         |> (fun n -> n &&& mask)
 
-   
+    /// set of registers to use for DP instructions (not R13 or R15)   
     let dReg() = sprintf "R%d" (match randomT.Next(14) with | 13 -> 14 | n -> n)
 
     let WS = uniformRan [" ";"\t"]
