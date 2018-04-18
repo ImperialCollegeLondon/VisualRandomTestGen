@@ -16,7 +16,7 @@ module VProgram =
     /// Framework code interprets registers after postlude as memory locations and flags
     let defaultParas = {
         Parallel = true              // parallel testing is now supported!
-        MaxConcurrentVisualDirs = 5 // should only need the same number as of cores
+        MaxConcurrentVisualDirs = 6 // should only need the same number as of cores
         Cached = true                // true if results are stored in a cache on disk and reused to speed 
                                      // up future repeat simulations
         VisualPath =  
@@ -49,23 +49,24 @@ module VProgram =
                 TFlags = v.State.VFlags
             } |> Some
 
-    let runDPTest (test: unit -> (DPath * string) list) (logRoot:string) (np:int) (size:int) =
+    let runDPTest (tList: (int * (DPath * string)) list) (logRoot:string) (np:int) (totalNum:int) (numThreads:int)=
         let fName = sprintf "%s%d.txt" logRoot np
         let paras = defaultParas
-        let rec testSeq() = seq { yield! test() ; yield! testSeq()}
-        let numTests = max size (test()).Length
-        let testsToRun = testSeq() |> Seq.take (numTests)
-        if np = 1 then printfn "%d tests. %d%% coverage." numTests (numTests*100 / test().Length)
-        let stopWatch = System.Diagnostics.Stopwatch.StartNew()
-        testsToRun
-        |> Seq.indexed
-        |> Seq.iter (fun (i, (path,asm)) ->
+        let numTests = tList.Length
 
-            if i = 20 && np = 1 then  
-                stopWatch.Stop()
-                let msTime = stopWatch.Elapsed.TotalMilliseconds / 50.0
-                printfn "\n\nTime per test: %.1f. Total time for this test set: %.1f\n" 
-                    msTime (msTime * float numTests / 1000.0)
+        let mutable watch: System.Diagnostics.Stopwatch option = None
+        tList
+        |> List.sortDescending
+        |> List.iter (fun (i, (path,asm)) ->
+            if i = totalNum - 5 && np = numThreads-1 then
+                watch <- Some <| System.Diagnostics.Stopwatch.StartNew()
+            match  watch with 
+            | Some w when np = numThreads - 1 && i = totalNum - 15 ->
+                w.Stop()
+                let msTime = w.Elapsed.TotalMilliseconds / (10.0 * float numThreads)
+                printfn "\n\nTime per test: %.1fms. Total time for this test set: %.1fs\n" 
+                    msTime (msTime * float numThreads * float numTests / 1000.0)
+            | _ -> ()
 
             let vso = 
                 RunVisualWithFlagsOut {
@@ -74,7 +75,7 @@ module VProgram =
                         InitFlags = path.TFlags
                 } asm
             let ts = {
-                    Name = sprintf "%s:%d" logRoot i
+                    Name = sprintf "%s:%d" logRoot (numThreads*i + np)
                     Before = path ; Asm = asm ; After = vsoToDP vso
                 }
             File.AppendAllText( paras.WorkFileDir + fName, saveState ts + "\r\n")
@@ -86,11 +87,20 @@ module VProgram =
     let runTestsInParallel paras testFns testSize =
         let numThreads = defaultParas.MaxConcurrentVisualDirs
         testFns
-        |> List.iter (fun (testFn,logRoot) -> 
+        |> List.iter ( fun ((testFn: unit -> (DPath * string) list) , logRoot) -> 
                 let logName n = sprintf "%s%d.txt" logRoot n
                 printfn "\nStarting %s" logRoot
-                Seq.init  numThreads (fun n -> 
-                    async {runDPTest testFn logRoot n (testSize/numThreads)})
+                let tNum = testFn().Length
+                let totalNum = max tNum testSize
+                let tests = 
+                    seq { while true do yield! testFn()}
+                    |> Seq.take totalNum
+                    |> Seq.toList
+                    |> List.indexed
+                    |> List.groupBy (fun (i,_) -> (float i * float numThreads) / float totalNum |> int)
+                tests
+                |> List.map  (fun (i, tLis) -> 
+                        async {runDPTest tLis logRoot i totalNum numThreads})
                 |> Async.Parallel
                 |> Async.RunSynchronously
                 |> ignore
@@ -120,7 +130,7 @@ module VProgram =
         initCaches defaultParas
         printfn "Caches initialised"
         //VRandom.dp3Shifts() |> List.iter (fun (a,b) -> printfn "%s\t%A" (a()) b)
-        runTestsInParallel defaultParas tests 200
+        runTestsInParallel defaultParas tests 100
         printfn "Tests completed"
         finaliseCaches defaultParas
         printfn "Caches finalised"

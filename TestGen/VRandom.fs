@@ -232,13 +232,14 @@ module VRandom =
     /// set of registers to use for DP instructions (not R13 or R15) 
     let dRegNum() = match randomT.Next(14) with | 13 -> 14 | n -> n
     let dReg num = RAND (fun () -> S <| sprintf "R%d" num)
+
     let DREG = RAND (fun () -> S <| sprintf "R%d" (dRegNum()))
 
     let WS = RAND (fun () ->  S [" ";"\t"].[randomT.Next(2)])
 
     let WSQ = RAND (fun () -> S [" ";"\t";""].[randomT.Next(3)])
 
-    let IMM = RAND (fun () -> S <| sprintf "R%d" (immediate()))
+    let IMM = RAND (fun () -> S <| sprintf "#%d" (int (immediate())))
 
 
 
@@ -283,5 +284,59 @@ module VRandom =
     let dp3Imms() = evalDP 4 <| dp3OpC ++ WS ++ DREG ++ WSQ ++ S "," ++ DREG ++ WSQ ++ S "," ++ WSQ ++ IMM
     let dp2Shifts() = evalDP 4 <| dp2OpC ++ WS ++ DREG ++ WSQ ++ S "," ++ WSQ ++ DREG ++ SHIFT
     let dp2Imms() = evalDP 4 <| dp2OpC ++ WS++ DREG ++ WSQ ++ S ","  ++ DREG ++ WSQ ++ S "," ++ WSQ ++ IMM
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                            MEMORY SINGLE REGISTER LOAD/STORE INSTRUCTIONS
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    let makeDCD lab (numb:int) = 
+        [lab ; "DCD" ] @ (
+            [0..numb] 
+            |> List.map ( fun _ -> sprintf "%d" (uiAllRand())
+                        )
+        )
+    /// this must be the same as for that used by Visual (ensured programmatically) and that used by Visual2 (no guarantee)
+    let dataSectionStart = 0x200
+    let memOpCodes = ALLSTRINGS ["LDR" ; "STR"]
+    let memOpSuffs = ALLSTRINGS ["";"B"]
+
+    let SEP = WSQ ++ S "," ++ WSQ
+    let BRA = S "[" ++ SEP
+    let KET = SEP ++ S "]"
+ 
+
+    let RG (n:int) = S (sprintf "R%d" n)
+
+    let makeMemImm() = 
+        let imms = [ 1;3;-1;-5;8;12;16;20;-8;-12;-16;-20]
+        imms.[randomT.Next(imms.Length)]
+
+    let MIMM = S "#" ++ 
+                    FORALL [ 
+                        RAND <| fun () -> S <| sprintf "0x%x" (makeMemImm()) 
+                        RAND <| fun () -> S <| sprintf "%d" (makeMemImm()) 
+                    ]
+
+    let inSide r offset rx = 
+        FORALL [
+            RG r 
+            RG r ++ SEP ++ MIMM  
+            RG r ++ SEP ++ RG rx
+            RG r ++ SEP ++ RG rx ++ SEP ++ FORALL [S "LSL" ; S "LSR"; S "ASR"]
+        ]
+
+    let MMODE r offset rx = 
+        FORALL [ 
+            BRA ++ inSide r offset rx ++ KET  
+            BRA ++ inSide r offset rx ++ KET ++ WSQ ++ S "!"
+            BRA ++ RG r ++ KET ++ SEP ++ MIMM
+        ]
+   
+    let memLoads mData mBase offset mExtra = eval <| S "LDR" ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (MMODE mBase offset mExtra)
+
 
         
