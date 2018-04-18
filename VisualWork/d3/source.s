@@ -1,24 +1,24 @@
 MOV R0, #0xFFFFFFFF
 ADDS R0, R0, R0
 MOVS R0, #1
-MOV R0, #0xfffffffc
-MOV R1, #0x80000000
-MOV R2, #0x80000004
-MOV R3, #0x2
-MOV R4, #0x80000004
-MOV R5, #0xffffffff
+MOV R0, #0x3
+MOV R1, #0xfffffffd
+MOV R2, #0x3
+MOV R3, #0xfffffffe
+MOV R4, #0x1
+MOV R5, #0x3
 MOV R6, #0xfffffffe
-MOV R7, #0x80000004
-MOV R8, #0xfffffffe
-MOV R9, #0x80000002
-MOV R10, #0x2
-MOV R11, #0x80000001
-MOV R12, #0xffffffff
-MOV R13, #0x7ffffffe
-MOV R14, #0x7ffffffd
+MOV R7, #0xffffffff
+MOV R8, #0x3
+MOV R9, #0xfffffffe
+MOV R10, #0xfffffffd
+MOV R11, #0x4
+MOV R12, #0x4
+MOV R13, #0xfffffffe
+MOV R14, #0x4
 
 
-CMN R3 ,	R3,LSR #16
+MVNS	R4, R11,	ASR	#27
 MOV R13, #0x1000
 LDMIA R13, {R0-R12}
 MOV R0, #0

@@ -44,7 +44,11 @@ module Visual =
         //printfn "%s" cmdArgs
         File.WriteAllText(paras.WorkFileDir + "comstr.txt", cmdArgs)
         try 
-            let proc = System.Diagnostics.Process.Start("cmd", cmdArgs)
+            let proc = new System.Diagnostics.Process();
+            proc.StartInfo.FileName <- "CMD.exe";
+            proc.StartInfo.Arguments <- cmdArgs;
+            proc.StartInfo.WindowStyle <- System.Diagnostics.ProcessWindowStyle.Hidden;
+            proc.Start() |> ignore
             proc.WaitForExit()
         with e -> ()//printfn "%s" e.Message
         let visLog = File.ReadAllLines outputF

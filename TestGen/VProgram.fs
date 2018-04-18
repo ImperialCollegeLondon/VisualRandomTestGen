@@ -16,7 +16,7 @@ module VProgram =
     /// Framework code interprets registers after postlude as memory locations and flags
     let defaultParas = {
         Parallel = true              // parallel testing is now supported!
-        MaxConcurrentVisualDirs = 10 // should only need the same number as of cores
+        MaxConcurrentVisualDirs = 5 // should only need the same number as of cores
         Cached = true                // true if results are stored in a cache on disk and reused to speed 
                                      // up future repeat simulations
         VisualPath =  
@@ -49,55 +49,66 @@ module VProgram =
                 TFlags = v.State.VFlags
             } |> Some
 
-    let runDPTest (test: unit -> DPath * string) (logRoot:string) (np:int) (n:int) =
+    let runDPTest (test: unit -> (DPath * string) list) (logRoot:string) (np:int) (size:int) =
         let fName = sprintf "%s%d.txt" logRoot np
         let paras = defaultParas
-        let path,asm = test()
-        let vso = 
-            RunVisualWithFlagsOut {paras with 
-                                    InitRegs = path.TRegs
-                                    InitFlags = path.TFlags} asm
-        let ts = 
-            {
-                Name = sprintf "%s:%d" logRoot n
-                Before = path ; Asm = asm ; After = vsoToDP vso
-            }
-        File.AppendAllText( paras.WorkFileDir + fName, saveState ts + "\r\n")
+        let rec testSeq() = seq { yield! test() ; yield! testSeq()}
+        let numTests = max size (test()).Length
+        let testsToRun = testSeq() |> Seq.take (numTests)
+        if np = 1 then printfn "%d tests. %d%% coverage." numTests (numTests*100 / test().Length)
+        let stopWatch = System.Diagnostics.Stopwatch.StartNew()
+        testsToRun
+        |> Seq.indexed
+        |> Seq.iter (fun (i, (path,asm)) ->
+
+            if i = 20 && np = 1 then  
+                stopWatch.Stop()
+                let msTime = stopWatch.Elapsed.TotalMilliseconds / 50.0
+                printfn "\n\nTime per test: %.1f. Total time for this test set: %.1f\n" 
+                    msTime (msTime * float numTests / 1000.0)
+
+            let vso = 
+                RunVisualWithFlagsOut {
+                    paras with 
+                        InitRegs = path.TRegs
+                        InitFlags = path.TFlags
+                } asm
+            let ts = {
+                    Name = sprintf "%s:%d" logRoot i
+                    Before = path ; Asm = asm ; After = vsoToDP vso
+                }
+            File.AppendAllText( paras.WorkFileDir + fName, saveState ts + "\r\n")
+            printf "%d.%d " np i
+           )
                 
-        
-
-    let runDPTests test np size logRoot =
-        [0..size-1]
-        |> List.iter (fun i -> runDPTest test logRoot np (np*size+i); printf " %d.%d " np i)
      
-
-
-    let runTests() =
-        0
     
     let runTestsInParallel paras testFns testSize =
         let numThreads = defaultParas.MaxConcurrentVisualDirs
         testFns
         |> List.iter (fun (testFn,logRoot) -> 
-            let logName n = sprintf "%s%d.txt" logRoot n
-            printfn "\nStarting %s" logRoot
-            Seq.init  numThreads (fun n -> async {runDPTests testFn n testSize logRoot})
-            |> Async.Parallel
-            |> Async.RunSynchronously
-            |> ignore
+                let logName n = sprintf "%s%d.txt" logRoot n
+                printfn "\nStarting %s" logRoot
+                Seq.init  numThreads (fun n -> 
+                    async {runDPTest testFn logRoot n (testSize/numThreads)})
+                |> Async.Parallel
+                |> Async.RunSynchronously
+                |> ignore
 
-            List.init  paras.MaxConcurrentVisualDirs (fun n ->
-                paras.WorkFileDir + logName n
-                |> fun fn -> 
-                        let txt = File.ReadAllText fn
-                        File.Delete fn
-                        txt)
-            |> String.concat ""
-            |> fun txt -> File.WriteAllText(paras.WorkFileDir + logRoot + "All.txt",txt)
-            printfn "\nFinished %s.\n\n" logRoot
-            )
+                List.init  paras.MaxConcurrentVisualDirs (fun n ->
+                    paras.WorkFileDir + logName n
+                    |> fun fn -> 
+                            let txt = File.ReadAllText fn
+                            File.Delete fn
+                            txt
+                )
+                |> String.concat ""
+                |> fun txt -> File.WriteAllText(paras.WorkFileDir + logRoot + "All.txt",txt) |> ignore
+                printfn "\nFinished %s.\n\n" logRoot
+        )
+            
 
-
+            
     [<EntryPoint>]
     let main _ = 
         let tests = [
@@ -108,7 +119,8 @@ module VProgram =
             ]
         initCaches defaultParas
         printfn "Caches initialised"
-        //runTestsInParallel defaultParas tests 200
+        //VRandom.dp3Shifts() |> List.iter (fun (a,b) -> printfn "%s\t%A" (a()) b)
+        runTestsInParallel defaultParas tests 200
         printfn "Tests completed"
         finaliseCaches defaultParas
         printfn "Caches finalised"

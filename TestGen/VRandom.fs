@@ -7,6 +7,46 @@ module VRandom =
     open VCommon
     open System.Threading
 
+
+    type RegBound = 
+        | Lim of uint32 * uint32 /// range
+        | Val of uint32 /// single value
+        | DPB of uint32 /// +/- n from 0 or 0x80000000
+    
+    type RegSpec = (int * RegBound) list
+
+    type TestCode =
+        | BOUNDED of TestCode * RegSpec
+        | RAND of (Unit->TestCode)
+        | S of string
+        | FORALL of TestCode list
+
+
+ 
+    let rec addBnds b1 b2 =
+        match b1,b2 with
+        | Lim(x1,y1), Lim(x2,y2) -> Lim(max x1 x2, min y1 y2)
+        | Val x, b -> addBnds (Lim(x,x)) b
+        | DPB x, DPB y -> DPB (min x y)
+        | DPB n, Lim(x2,y2) -> failwithf "Can't combine DP and Lim register bounds: %A, %A" b1 b2
+        | b1, b2 -> addBnds b2 b1
+
+    let addSpecs (s1:RegSpec) (s2:RegSpec) =
+        let grb r (s:RegSpec) = 
+            List.tryFind (fun (r',_) -> r = r') s
+            |> Option.map (fun (r,b) -> b)
+        let getRegBnd r =
+            match grb r s1, grb r s2 with
+            | None, None -> []
+            | None, Some b1
+            | Some b1, None -> [(r,b1)]
+            | Some b1, Some b2 -> [r, addBnds b1 b2]
+        [0..14] |> List.collect (fun r -> getRegBnd r)
+        
+        
+        
+
+
     let randomT = Random()
 
    
@@ -72,15 +112,7 @@ module VRandom =
             then int32 (uiAllRand())
             else (uiRangeRand(0u, uRange)() |> int32) + iMin
 
-    type RegBound = Lim of string * uint32 * uint32 | Val of string * uint32 | DPB of string
 
-    type TestCode = 
-        | FORALL of TestCode list 
-        | BOUNDED of TestCode * RegBound list
-        | RAND of (Unit->string)
-        | S of string
-
-    let addBounds rbl (s, rbl') = s, (rbl @ rbl')
 
     /// Selected random 32 bit integers good for exploring corner cases of DP instructions
     /// n determines how tightly numbers focus on corners (+/- n each corner)
@@ -94,23 +126,17 @@ module VRandom =
                     ])
         fun () -> u()()
 
+    let returnInitRegVal reg spec =
+        let minMax = (UInt32.MinValue,UInt32.MaxValue)
+        match List.tryFind (fun (r,_) -> r = reg) spec with 
+        | None -> uiRangeRand minMax ()
+        | Some (_, Lim(umin,umax)) -> uiRangeRand(umin,umax)()
+        | Some (_, DPB n) -> (dpRand (int n))()
+        | Some (_, Val n) -> n
 
-    let returnInitRegVal reg rbl =
-        let minMax = (false, UInt32.MinValue,UInt32.MaxValue)
-        let resolve (isDP, umin, umax) = 
-            function | Lim(r,a,b) when r = reg -> isDP, max umin a, min umax b 
-                     | Val(r,n) when r = reg && umin <= n && umax >= n  -> (isDP, n, n)
-                     | Val(r,n) -> failwithf "Inconsistent register value (%d) for %s" n reg
-                     | DPB r -> true, umin, umax
-                     | _ -> (isDP, umin,umax)
 
-        let (isDP, umin,umax) = List.fold resolve minMax rbl
-        match isDP with
-        | false -> uiRangeRand(umin,umax)()
-        | true when umax < 33u -> uiRangeRand(umin,umax)()
-        | true -> (dpRand 4)()
 
-    let createDPath (rbl: RegBound list) =
+    let createDPath (rs: RegSpec) =
         let randTF() = 
             match randomT.Next(2) with 
             | 0 -> false 
@@ -118,8 +144,7 @@ module VRandom =
 
         let regs =
             [0..14]
-            |> List.map (fun n -> sprintf "R%d" n)
-            |> List.map (fun reg -> (returnInitRegVal reg rbl))
+            |> List.map (fun n -> (returnInitRegVal n rs))
 
         let nz = randomT.Next(3)
         {
@@ -133,22 +158,23 @@ module VRandom =
         }
 
 
-    let rec Eval (tc:TestCode): ((Unit->string) * RegBound list) list =
+    let rec eval (tc:TestCode): ((Unit->string) * RegSpec) list =
+        let combineSpec rs (s, rs') = s, addSpecs rs rs'
         match tc with
-        | FORALL lis -> lis |> List.collect Eval 
-        | BOUNDED (tc, rbl) -> tc |> Eval |> List.map (addBounds rbl)
-        | RAND f -> [f , []]
+        | FORALL lis -> lis |>  List.collect eval
+        | BOUNDED (tc, rs) -> tc |> eval |> List.map (combineSpec rs)
+        | RAND f -> f () |> eval 
         | S s -> [(fun () -> s) , []]
-
-    let joinTests (tcl: TestCode list) = 
-        let join1 st lis = 
-            List.allPairs st lis 
-            |> List.map (fun ((s1, rbl1),(s2,rbl2)) -> (fun () -> s1()+s2()), rbl1 @ rbl2)
-        tcl 
-        |> List.map Eval 
-        |> List.fold join1 [(fun ()->""),[]]
-        |> List.map (fun (fs,rbl) -> createDPath rbl, fs())
-
+        
+    let rec (++) (r1:TestCode) (r2:TestCode) = 
+            match r1, r2 with
+            | FORALL rl1, r2 -> FORALL (List.map (fun r1 -> r1 ++ r2) rl1)
+            | r1, FORALL rl2 -> FORALL (List.map (fun r2 -> r1 ++ r2) rl2)
+            | BOUNDED (r1, bnd), r2
+            | r1, BOUNDED (r2,bnd) -> BOUNDED (r1 ++ r2, bnd)
+            | RAND r1, r2 -> RAND (fun () -> r1() ++ r2)
+            | r1, RAND r2 -> RAND (fun () -> r1 ++ r2())
+            | S r1, S r2 -> S (r1 + r2)
 
 
 
@@ -158,11 +184,21 @@ module VRandom =
  //
  //--------------------------------------------------------------------------------
 
-        
+
+    let ALLSTRINGS lst = FORALL (lst |> List.map S)
+ 
+    let RANDSTR (lst: string list) = RAND (fun () -> S lst.[randomT.Next(lst.Length)])
+ 
+
+    let testMap map tc =
+        match tc with
+        | FORALL lis -> List.map map lis |> FORALL
+        | _ -> failwithf "Unexpected Test case in testMap %A" tc
+
     /// op-codes for 3 operand instructions to test
 
     let dp3OpC = 
-        uniformRan [ 
+        ALLSTRINGS [ 
             "ADD";"ADC";"SUB";"SBC";"RSB";"RSC"; 
             "AND";"EOR";"BIC";"ORR" ; "ADDS"; 
             "ADCS"; "SBCS"; "RSBS"; "RSCS" ; "ANDS"; "EORS" ; "BICS"
@@ -170,10 +206,13 @@ module VRandom =
 
     /// op-codes for 2 operand instructions to test    
     let dp2OpC =
-        uniformRan [ "MOV"; "MVN"; "TST"; "TEQ"; "CMN"; "MOVS"; "MVNS" ]
+        ALLSTRINGS [ "MOV"; "MVN"; "TST"; "TEQ"; "CMN"; "MOVS"; "MVNS" ]
 
-    /// shift operands (without RRX) to test  
-    let shiftOp = uniformRan [ "" ; "ASR" ; "LSR" ; "LSL" ; "ROR" ]
+    /// shift operands (without RRX)  
+    let shiftOp = ALLSTRINGS [ "" ; "ASR" ; "LSR" ; "LSL" ; "ROR" ]
+
+    /// shift operands (with RRX)
+    let shiftOpRRX = ALLSTRINGS [ "" ; "RRX" ; "ASR" ; "LSR" ; "LSL" ; "ROR" ]
 
 
     /// generate a random DP immediate constant that is mostly of valid form
@@ -189,51 +228,60 @@ module VRandom =
         | _ -> imm
         |> (fun n -> n &&& mask)
 
-    /// set of registers to use for DP instructions (not R13 or R15)   
-    let dReg() = sprintf "R%d" (match randomT.Next(14) with | 13 -> 14 | n -> n)
 
-    let WS = uniformRan [" ";"\t"]
+    /// set of registers to use for DP instructions (not R13 or R15) 
+    let dRegNum() = match randomT.Next(14) with | 13 -> 14 | n -> n
+    let dReg num = RAND (fun () -> S <| sprintf "R%d" num)
+    let DREG = RAND (fun () -> S <| sprintf "R%d" (dRegNum()))
 
-    let WSQ = uniformRan [" ";"\t";""]
+    let WS = RAND (fun () ->  S [" ";"\t"].[randomT.Next(2)])
 
-    let IMM() = (sprintf "#%d" (immediate() |> int))
+    let WSQ = RAND (fun () -> S [" ";"\t";""].[randomT.Next(3)])
 
-    let shiftAmt() =
-        match randomT.Next(20) with
-        | 0 -> WS() + dReg() 
-        | _ -> WS() + (sprintf "#%d" <| randomT.Next(0,33))
+    let IMM = RAND (fun () -> S <| sprintf "R%d" (immediate()))
 
 
-    let cont x = fun () -> x
 
-    let makeShift() =
-        match shiftOp() with
-        | "" -> ""
-        | "RRX" -> WSQ() + "," + WSQ() + "RRX"
-        | s -> WSQ() + "," + WSQ() + s + shiftAmt()
+      
+    
 
-
- 
-    let eval lis = lis |> List.map (fun x -> x()) |> String.concat ""
-
-    let makeRTest syntaxLst = 
-        let randTF() = 
-            match randomT.Next(2) with 
-            | 0 -> false 
-            | 1 -> true 
-            | _ -> failwithf "What? Cannot happen!"
-        /// 0 -> NZ=00 ; 1 -> NZ=01 ; 2 -> NZ=10
-        let ran = dpRand 4
-        let nz = randomT.Next(3)
-        {
-            TRegs = List.init 15 (fun _ -> ran()) 
-            TFlags = {FC=randTF() ; FN = nz = 2 ; FV =randTF() ; FZ = nz = 1}
-        }, (syntaxLst |> eval)
+    let SHIFTAMT =
+        RAND (fun () ->
+                match randomT.Next(20) with
+                | n when n < 10 -> 
+                    let r = dRegNum()
+                    let reg = sprintf "R%d" r
+                    BOUNDED( WS ++ S reg, [r,Lim(0u,32u)])
+                | _ -> WS ++ RAND (fun () -> (randomT.Next(0,33) |> sprintf "#%d" |> S))
+             )
 
 
-    let dp3Shifts() =  makeRTest [ dp3OpC ; WS ; dReg ; WSQ; cont ","; dReg ; WSQ; cont "," ; WSQ; dReg ; makeShift]
-    let dp3Imms() = makeRTest [dp3OpC ; WS; dReg ; WSQ; cont ","; dReg ; WSQ ; cont "," ; WSQ; IMM]
-    let dp2Shifts() = makeRTest [ dp2OpC ; WS ; dReg ; WSQ; cont "," ; WSQ; dReg ; makeShift]
-    let dp2Imms() = makeRTest [dp2OpC ; WS; dReg ; WSQ; cont ","; dReg ; WSQ ; cont "," ; WSQ; IMM]
+    let SHIFT =
+        let mapF so =
+            match so with
+            | S "" -> S ""
+            | S "RRX" -> WSQ ++ S "," ++ WSQ ++ S "RRX"
+            | S s -> WSQ ++ S "," ++ WSQ ++ S s ++ SHIFTAMT
+            | _ -> failwithf "Unexpected test description found in makeshift map function"
+        shiftOpRRX |> testMap mapF
+
+    /// evaluate a TestCode using default register limits corresponding to DP corner cases
+    /// these are over-ridden by any limits in the specification
+    let evalDP dpLim lis =
+        let elis = eval lis
+        let getRegBnds (rs:RegSpec) n =
+            match List.tryFind (fun (r,_) -> r=n) rs with
+            | None -> (n, DPB (uint32 dpLim))
+            | Some x -> x
+        elis
+        |> List.map (fun (fs,rs) -> 
+            ([0..14] |> List.map (getRegBnds rs) |> createDPath), (fs())
+            )
+
+
+    let dp3Shifts() = evalDP 4 <| dp3OpC ++ WS ++ DREG ++ WSQ ++ S "," ++ DREG ++ WSQ ++ S "," ++ WSQ ++ DREG ++ SHIFT
+    let dp3Imms() = evalDP 4 <| dp3OpC ++ WS ++ DREG ++ WSQ ++ S "," ++ DREG ++ WSQ ++ S "," ++ WSQ ++ IMM
+    let dp2Shifts() = evalDP 4 <| dp2OpC ++ WS ++ DREG ++ WSQ ++ S "," ++ WSQ ++ DREG ++ SHIFT
+    let dp2Imms() = evalDP 4 <| dp2OpC ++ WS++ DREG ++ WSQ ++ S ","  ++ DREG ++ WSQ ++ S "," ++ WSQ ++ IMM
 
         
