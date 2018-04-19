@@ -85,8 +85,8 @@ module VRandom =
     /// Extract a list of register numbers from a TestCode
     /// e.g. FORALL [S "R10" ; S "R3"] -> [3 ; 10]
     /// Also works on single registers (S "R3")
+    /// Will correctly recurse to inner FORALL & BOUNDED cases
     /// Will ignore registers inside other TestCode cases
-    /// Will correctly recurse to inner FORALL
     /// The reg number list is sorted in ascending order
     let rec fromRegTC (regLst: TestCode) = 
         match regLst with
@@ -94,7 +94,11 @@ module VRandom =
         | FORALL rLst -> 
             rLst 
             |> List.collect (function | REGNUM n -> [n] | _ -> [])
-            |> List.sort
+        | BOUNDED(tc,_) -> fromRegTC tc
+        | RAND _ -> []
+        | _ -> failwithf "Unexpected testcode for register number extraction: %A" regLst
+        |> List.sort
+     
  
     /// Combine two RegBound values to get their (set) intersection
     /// Only Val and Limit bounds can be intersected in general
@@ -213,11 +217,12 @@ module VRandom =
                     FC=randTF() ; 
                     FN = nz = 2 ; 
                     FV =randTF() ; 
-                    FZ = nz = 1}
+                    FZ = nz = 1
+                }
         }
 
     /// Evaluate a TestCode value to return a list of test specifications.
-    /// Each test spec is a function to generate (randomised)assembler
+    /// Each test spec is a function to generate (randomised) assembler
     /// paired with a RegSpec that specified compatible register value limits
     /// for multiple tests call the returned function multiple times, generating a
     /// new randomised DPath from the RegSpec for each test.
@@ -338,11 +343,14 @@ module VRandom =
             ([0..14] |> List.map (getRegBnds rs) |> createDPath), (fs())
             )
 
+    let opImm() =  WSQ ++ S "," ++ WSQ ++ S "," ++ WSQ ++ IMM
+    let opShift() = WSQ ++ S "," ++ WSQ ++ DPREG ++ SHIFT
+    let opWithDest opc = opc ++ WS ++ DPREG
 
-    let dp3Shifts() = EVALDP 4 <| dp3OpC ++ WS ++ DPREG ++ WSQ ++ S "," ++ DPREG ++ WSQ ++ S "," ++ WSQ ++ DPREG ++ SHIFT
-    let dp3Imms() = EVALDP 4 <| dp3OpC ++ WS ++ DPREG ++ WSQ ++ S "," ++ DPREG ++ WSQ ++ S "," ++ WSQ ++ IMM
-    let dp2Shifts() = EVALDP 4 <| dp2OpC ++ WS ++ DPREG ++ WSQ ++ S "," ++ WSQ ++ DPREG ++ SHIFT
-    let dp2Imms() = EVALDP 4 <| dp2OpC ++ WS++ DPREG ++ WSQ ++ S ","  ++ DPREG ++ WSQ ++ S "," ++ WSQ ++ IMM
+    let dp3Shifts() = EVALDP 4 <| opWithDest dp3OpC ++ WSQ ++ S "," ++ DPREG ++ opShift()
+    let dp3Imms() = EVALDP 4 <| opWithDest dp3OpC ++ WSQ ++ S "," ++ DPREG ++ opImm()
+    let dp2Shifts() = EVALDP 4 <| opWithDest dp2OpC ++ WSQ ++ opShift()
+    let dp2Imms() = EVALDP 4 <| opWithDest dp2OpC ++ opImm()
 
 
 
