@@ -375,11 +375,12 @@ module VRandom =
         let imms = [ 1;3;-1;-5;8;12;16;20;-8;-12;-16;-20]
         imms.[randomT.Next(imms.Length)]
 
-    let MIMM = S "#" ++ 
-                    FORALL [ 
-                        RAND <| fun () -> S <| sprintf "0x%x" (makeMemImm()) 
-                        RAND <| fun () -> S <| sprintf "%d" (makeMemImm()) 
-                    ]
+    let MIMM = 
+        S "#" ++ 
+            FORALL [ 
+                RAND <| fun () -> S <| sprintf "0x%x" (makeMemImm()) 
+                RAND <| fun () -> S <| sprintf "%d" (makeMemImm()) 
+            ]
 
     let inSide r offset rx = 
         FORALL [
