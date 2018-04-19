@@ -8,4 +8,7 @@ if errorlevel 1 (
 
 
 
+
+
+
 packages\build\FAKE\tools\FAKE.exe build.fsx %*
