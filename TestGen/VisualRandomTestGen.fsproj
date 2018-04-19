@@ -6,6 +6,7 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EEExtensions.fs" />
     <Compile Include="VCommon.fs" />
     <Compile Include="VRandom.fs" />
     <Compile Include="VData.fs" />

@@ -16,12 +16,12 @@ These instructions work for Windows. In theory it should work on other systems b
 
 ### More Information
 
-The test framework on which this code is based in documented in ./Visualtest2/Readme.md. However, not all of the framework is used. In fact the whole cache system is not needed and could usefully be removed, see issues.
+The test framework on which this code is based in documented in ./Readme2.md. However, not all of the framework is used. In fact the whole cache system is not needed and could usefully be removed, see *issues*.
 
 ### Directories
 
 * `./VisualWork/*` - transient working files, will be recreated
 * `./visualapp/*` - binaries to run Visual simulator
-* `./Visualtest2/*` - project to generate random test data files
+* `./TestGen/*` - project to generate random test data files
 
 
