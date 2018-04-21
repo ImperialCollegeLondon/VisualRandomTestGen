@@ -55,7 +55,6 @@ module VRandom =
         | FORALL lis -> List.map map lis |> FORALL
         | _ -> failwithf "Unexpected Test case in testMap %A" tc
 
-    /// op-codes for 3 operand instructions to test
 
 
     /// Return minB..maxB RegBounds for multiple registers
@@ -250,6 +249,11 @@ module VRandom =
             | r1, RAND r2 -> RAND (fun () -> r1 ++ r2())
             | S r1, S r2 -> S (r1 + r2)
 
+    /// make a list of TestCode into an assembly program, one line each
+    let rec ASMLINES lst = 
+        match lst with
+        | a :: rest -> a ++ S "\n" ++ ASMLINES rest
+        | [] -> S ""
 
 
  //--------------------------------------------------------------------------------
@@ -345,12 +349,13 @@ module VRandom =
 
     let opImm() =  WSQ ++ S "," ++ WSQ ++ S "," ++ WSQ ++ IMM
     let opShift() = WSQ ++ S "," ++ WSQ ++ DPREG ++ SHIFT
-    let opWithDest opc = opc ++ WS ++ DPREG
+    let op2() = WSQ ++ S "," ++ DPREG
+    let makeDPOp opc ops = EVALDP 4 <|  opc ++ WS ++ DPREG ++ ops
 
-    let dp3Shifts() = EVALDP 4 <| opWithDest dp3OpC ++ WSQ ++ S "," ++ DPREG ++ opShift()
-    let dp3Imms() = EVALDP 4 <| opWithDest dp3OpC ++ WSQ ++ S "," ++ DPREG ++ opImm()
-    let dp2Shifts() = EVALDP 4 <| opWithDest dp2OpC ++ WSQ ++ opShift()
-    let dp2Imms() = EVALDP 4 <| opWithDest dp2OpC ++ opImm()
+    let dp3Shifts() = makeDPOp dp3OpC  (op2()  ++ opShift())
+    let dp3Imms() = makeDPOp dp3OpC (op2() ++ opImm())
+    let dp2Shifts() = makeDPOp dp2OpC (WSQ ++ opShift())
+    let dp2Imms() = makeDPOp dp2OpC (opImm())
 
 
 
@@ -360,55 +365,98 @@ module VRandom =
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let makeDCD lab (numb:int) = 
-        [lab ; "DCD" ] @ (
-            [0..numb] 
-            |> List.map ( fun _ -> sprintf "%d" (uiAllRand())
-                        )
-        )
+    let EVALMEM lis =
+        let elis = EVAL lis
+        let getRegBnds (rs:RegSpec) n =
+            match List.tryFind (fun (r,_) -> r=n) rs with
+            | None -> (n, Lim(0u,UInt32.MaxValue))
+            | Some x -> x
+        elis
+        |> List.map (fun (fs,rs) -> 
+            ([0..14] |> List.map (getRegBnds rs) |> createDPath), (fs())
+            )
+
+ 
     /// this must be the same as for that used by Visual (ensured programmatically by this project) and that used by Visual2 (no guarantee)
-    let dataSectionStart = 0x100
+    let dataSectionStart = 0x200u
 
     let memOpCodes = ALLSTRINGS ["LDR" ; "STR"]
     let memOpSuffs = ALLSTRINGS ["";"B"]
 
     let SEP = WSQ ++ S "," ++ WSQ
-    let BRA = S "[" ++ SEP
-    let KET = SEP ++ S "]"
+    let BRA = S "[" ++ WSQ
+    let KET = WSQ ++ S "]"
  
 
     let RG (n:int) = S (sprintf "R%d" n)
+
+    let makeDCD lab (numb:int) = 
+        S lab ++ WS ++ S "DCD"  ++ WS ++ (
+            [0..numb] 
+            |> List.map (fun _ -> uiAllRand() |> sprintf "%d" |> S  )
+            |> List.reduce (fun a b -> a ++ SEP ++ b))
+        
+
 
     let makeMemImm() = 
         let imms = [ 1;3;-1;-5;8;12;16;20;-8;-12;-16;-20]
         imms.[randomT.Next(imms.Length)]
 
-    let MIMM = 
+    let mImm = 
         S "#" ++ 
             FORALL [ 
                 RAND <| fun () -> S <| sprintf "0x%x" (makeMemImm()) 
                 RAND <| fun () -> S <| sprintf "%d" (makeMemImm()) 
             ]
 
+    let mShiftAmt rx = RAND (fun () ->
+            let n = randomT.Next(1,4)
+            let b = match n with
+                    | 1 -> 8
+                    | 2 -> 4
+                    | _ -> 1
+            let r = randomT.Next(10,14)
+            BOUNDED( S <| sprintf "#%d" b, [rx, Lim(1u , uint32 n)]) 
+        )
 
-    let inSide r offset rx = 
+    let inSide r rx = 
         FORALL [
             RG r 
-            RG r ++ SEP ++ MIMM  
+            RG r ++ SEP ++ mImm  
             RG r ++ SEP ++ RG rx
-            RG r ++ SEP ++ RG rx ++ SEP ++ FORALL [S "LSL" ; S "LSR"; S "ASR"]
+            RG r ++ SEP ++ RG rx ++ SEP ++ FORALL [S "LSL" ; S "LSR"; S "ASR"] ++ WS ++ mShiftAmt rx
         ]
 
-    let memMode r offset rx = 
-        FORALL [ 
-            BRA ++ inSide r offset rx ++ KET  
-            BRA ++ inSide r offset rx ++ KET ++ WSQ ++ S "!"
-            BRA ++ RG r ++ KET ++ SEP ++ MIMM
+    let memMode r rx = 
+        FORALL [  
+            BRA ++ inSide r rx ++ KET ++ WSQ ++ ALLSTRINGS [ "" ; "!"]
+            BRA ++ RG r ++ KET ++ SEP ++ mImm
         ]
    
-    let memLoads mData mBase offset mExtra = 
-        S "LDR" ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase offset mExtra)
+    let memLoads mData mBase mExtra = 
+        S "LDR" ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase mExtra)
         |> fun tc -> BOUNDED (tc, [])
+
+    
+
+    let memLDRX() = 
+        EVALMEM <|
+            let regPool = [0..14]
+            let chooseReg (pool: int list) = 
+                let chosen = pool.[randomT.Next pool.Length]
+                let pool' = List.filter ((<>) chosen) pool
+                (chosen, pool')
+            let (mData,p) = chooseReg regPool
+            let (mBase,p') = chooseReg p
+            let (mExtra, p'') = chooseReg p'
+            ASMLINES [ 
+                S "ADR" ++ WS ++ RG mBase ++ SEP ++ S "DAT3"
+                memLoads mData mBase mExtra  
+                makeDCD "DAT1" 16  
+                makeDCD "DAT2" 16
+                makeDCD "DAT3" 16 
+                makeDCD "DAT4" 16
+            ] |> (fun tc -> BOUNDED( tc, [mExtra, Lim(1u,3u)]))
 
 
         

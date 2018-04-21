@@ -30,7 +30,7 @@ module Visual =
         let visualJarExec vp = vp + @"jre\bin\java -jar "
         //printfn "\n\nVisual Temp files:%s\n" tempFilePath
         Directory.CreateDirectory paras.WorkFileDir |> ignore
-        let runOpts = VisualOpts + sprintf " --meminstsize:0x%x " 0x1000
+        let runOpts = VisualOpts + sprintf " --meminstsize:0x%x " VRandom.dataSectionStart
         let visualHeadlessExec srcFile outputFile opts = 
             (visualJarExec paras.VisualPath) + paras.VisualPath + @"content\visual_headless.jar --headless " + srcFile + " " + outputFile 
             + " " + opts + " >nul 2>&1"

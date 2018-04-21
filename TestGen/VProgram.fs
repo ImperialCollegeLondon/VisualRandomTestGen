@@ -28,7 +28,7 @@ module VProgram =
         CacheLimit = 10               // the number of results before adding to global cache
         InitFlags = {FN=false;FZ=false; FC=false;FV=false}
         InitRegs = [0u..10u..140u]          // initial values of registers R0..R14
-        MemReadBase = 0x1000u          // locations read from memory (currently 13 consecutive words are read)
+        MemReadBase = VRandom.dataSectionStart          // locations read from memory (currently 13 consecutive words are read)
         Postlude = ""                 // this is overwritten by code
         Prelude = ""                  // this is overwritten by code
     } 
@@ -127,10 +127,13 @@ module VProgram =
             VRandom.dp3Shifts,"dp3Shifts";
             VRandom.dp2Shifts, "dp2Shifts"
             ]
+        let memTests = [
+            VRandom.memLDRX, "MemLoads"
+            ]
         initCaches defaultParas
         printfn "Caches initialised"
-        //VRandom.dp3Shifts() |> List.iter (fun (a,b) -> printfn "%s\t%A" (a()) b)
-        runTestsInParallel defaultParas tests 100
+        //VRandom.memLDRX() |> List.iter (fun (a,b) -> printfn "%s\t%A" (a()) b)
+        runTestsInParallel defaultParas memTests 40
         printfn "Tests completed"
         finaliseCaches defaultParas
         printfn "Caches finalised"
