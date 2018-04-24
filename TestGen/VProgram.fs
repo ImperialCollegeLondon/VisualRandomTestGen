@@ -57,7 +57,7 @@ module VProgram =
         let mutable watch: System.Diagnostics.Stopwatch option = None
         tList
         |> List.sortDescending
-        |> List.iter (fun (i, (path,asm)) ->
+        |> List.sumBy (fun (i, (path,asm)) ->
             if i = totalNum - 5 && np = numThreads-1 then
                 watch <- Some <| System.Diagnostics.Stopwatch.StartNew()
             match  watch with 
@@ -80,6 +80,7 @@ module VProgram =
                 }
             File.AppendAllText( paras.WorkFileDir + fName, saveState ts + "\r\n")
             printf "%d.%d " np i
+            if ts.After = None then (1.0 / float tList.Length) else 0.0
            )
                 
      
@@ -99,11 +100,14 @@ module VProgram =
                     |> List.indexed
                     |> List.groupBy (fun (i,_) -> (float i * float numThreads) / float totalNum |> int)
                 tests
-                |> List.map  (fun (i, tLis) -> 
-                        async {runDPTest tLis logRoot i totalNum numThreads})
+                |> List.map  (fun (i, tLis) -> async {
+                    let errorFrac = runDPTest tLis logRoot i totalNum numThreads
+                    return errorFrac
+                    })
                 |> Async.Parallel
                 |> Async.RunSynchronously
-                |> ignore
+                |> Array.average
+                |> (fun frac -> printfn "\n\n*** %.1f%% VisUAL ERRORs\n" (frac*100.0))
 
                 List.init  paras.MaxConcurrentVisualDirs (fun n ->
                     paras.WorkFileDir + logName n
@@ -114,7 +118,7 @@ module VProgram =
                 )
                 |> String.concat ""
                 |> fun txt -> File.WriteAllText(paras.WorkFileDir + logRoot + "All.txt",txt) |> ignore
-                printfn "\nFinished %s.\n\n" logRoot
+                printfn "Finished %s." logRoot
         )
             
 
@@ -127,13 +131,18 @@ module VProgram =
             VRandom.dp3Shifts,"dp3Shifts";
             VRandom.dp2Shifts, "dp2Shifts"
             ]
-        let memTests = [
-            VRandom.memLDRX, "MemLoads"
+        let singleMemTests = [
+            VRandom.memSingleTest true, "MemLoads"
+            VRandom.memSingleTest false, "MemStores"
+            ]
+        let multMemTests = [
+            VRandom.memMultiTest true, "MultMemLoads"
+            VRandom.memMultiTest false, "MultMemStores"
             ]
         initCaches defaultParas
         printfn "Caches initialised"
-        //VRandom.memLDRX() |> List.iter (fun (a,b) -> printfn "%s\t%A" (a()) b)
-        runTestsInParallel defaultParas memTests 40
+        runTestsInParallel defaultParas singleMemTests 80
+        runTestsInParallel defaultParas multMemTests 80
         printfn "Tests completed"
         finaliseCaches defaultParas
         printfn "Caches finalised"

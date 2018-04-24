@@ -258,7 +258,7 @@ module VRandom =
 
  //--------------------------------------------------------------------------------
  //
- //                   CODE FOR ARM INSTRUCTION GENERATION
+ //                   CODE FOR ARM DP INSTRUCTION GENERATION
  //
  //--------------------------------------------------------------------------------
 
@@ -361,9 +361,68 @@ module VRandom =
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//                            MEMORY SINGLE REGISTER LOAD/STORE INSTRUCTIONS
+//                                                MEMORY COMMON CODE
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    let SEP = WSQ ++ S "," ++ WSQ
+    let BRA = S "[" ++ WSQ
+    let KET = WSQ ++ S "]" 
+
+    let RG (n:int) = S (sprintf "R%d" n)
+
+    let makeDCD lab (numb:int) = 
+        RAND <| 
+            fun () ->
+                S lab ++ WS ++ S "DCD"  ++ WS ++ (
+                    [0..numb-1] 
+                    |> List.map (fun _ -> uiAllRand() |> sprintf "%d" |> S  )
+                    |> List.reduce (fun a b -> a ++ SEP ++ b))
+
+    let chooseReg (pool: int list) = 
+        let chosen = pool.[randomT.Next pool.Length]
+        let pool' = List.filter ((<>) chosen) pool
+        (chosen, pool')
+
+    let chooseNo13Reg pool =
+        let poolNo13 = List.filter ((<>) 13) pool
+        let chosen = poolNo13.[randomT.Next poolNo13.Length]
+        let pool' = List.filter ((<>) chosen) pool
+        (chosen, pool')
+    
+    let liftChoose chooseFun (chosenLst, pool) =
+        let choice, pool' = chooseFun pool
+        chosenLst @ [choice], pool'
+
+    let choose2 choosers pool =
+                match ([],pool) |> choosers with
+                | [a;b], p -> a,b,p
+                | _ -> failwith "What - can't happen!"
+
+    
+    let choose3 choosers pool =
+                match ([],pool) |> choosers with
+                | [a;b;c], p -> a,b,c,p
+                | _ -> failwith "What - can't happen!"
+
+    let choose4 choosers pool =
+            match ([], pool) |> choosers with
+            | [a;b;c;d], p -> a,b,c,d,p
+            | _ -> failwith "What - can't happen!"
+
+    let choose5 choosers pool =
+        match ([], pool) |> choosers with
+        | [a;b;c;d;e], p -> a,b,c,d,e,p
+        | _ -> failwith "What - can't happen!"
+
+    let choose6 choosers pool =
+        match ([], pool) |> choosers with
+        | [a;b;c;d;e;f], p -> a,b,c,d,e,f,p
+        | _ -> failwith "What - can't happen!"
+
+
+    let CR = liftChoose chooseReg
+    let CRN13 = liftChoose chooseNo13Reg
 
     let EVALMEM lis =
         let elis = EVAL lis
@@ -375,26 +434,45 @@ module VRandom =
         |> List.map (fun (fs,rs) -> 
             ([0..14] |> List.map (getRegBnds rs) |> createDPath), (fs())
             )
+    
 
+    let makeDCDs() =
+        ASMLINES [
+            makeDCD "DAT1" 16  
+            makeDCD "DAT2" 16
+            makeDCD "DAT3" 16 
+            makeDCD "DAT4" 16
+        ]
+
+    /// Make DCDs and also code that Checksums them.
+    /// pool -> list of fre registers from which the 3 registers used by check are chosen.
+    let makeMemCheckCode pool =
+        let  rCheck1, rCheck2, rTmp, _ = choose3 (CR >> CR >> CRN13) pool
+        ASMLINES [
+            S <| sprintf "; **** CheckSum in R%d ***" rCheck1
+            S <| sprintf "ADR R%d, DAT1+0x100" rCheck2
+            S <| sprintf "MOV R%d, #0" rCheck1
+            S <| sprintf "CHECKLOOP LDR R%d, [R%d,#-4]!" rTmp rCheck2
+            S <| sprintf "ADD R%d, R%d, R%d" rCheck1 rCheck1 rTmp
+            S <| sprintf "ADR R%d, DAT1" rTmp
+            S <| sprintf "CMP R%d,R%d" rCheck2 rTmp
+            S <| "BNE CHECKLOOP"
+            makeDCDs()
+            ]
+
+    let setMBase mBase = S "ADR" ++ WS ++ RG mBase ++ SEP ++ S "DAT3"             
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                            MEMORY SINGLE REGISTER LOAD/STORE INSTRUCTIONS
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                   
  
     /// this must be the same as for that used by Visual (ensured programmatically by this project) and that used by Visual2 (no guarantee)
     let dataSectionStart = 0x200u
 
-    let memOpCodes = ALLSTRINGS ["LDR" ; "STR"]
-    let memOpSuffs = ALLSTRINGS ["";"B"]
 
-    let SEP = WSQ ++ S "," ++ WSQ
-    let BRA = S "[" ++ WSQ
-    let KET = WSQ ++ S "]"
- 
-
-    let RG (n:int) = S (sprintf "R%d" n)
-
-    let makeDCD lab (numb:int) = 
-        S lab ++ WS ++ S "DCD"  ++ WS ++ (
-            [0..numb] 
-            |> List.map (fun _ -> uiAllRand() |> sprintf "%d" |> S  )
-            |> List.reduce (fun a b -> a ++ SEP ++ b))
         
 
 
@@ -402,22 +480,22 @@ module VRandom =
         let imms = [ 1;3;-1;-5;8;12;16;20;-8;-12;-16;-20]
         imms.[randomT.Next(imms.Length)]
 
-    let mImm = 
+    let mImm = RAND <| fun () -> 
         S "#" ++ 
             FORALL [ 
                 RAND <| fun () -> S <| sprintf "0x%x" (makeMemImm()) 
                 RAND <| fun () -> S <| sprintf "%d" (makeMemImm()) 
             ]
 
-    let mShiftAmt rx = RAND (fun () ->
-            let n = randomT.Next(1,4)
-            let b = match n with
-                    | 1 -> 8
-                    | 2 -> 4
-                    | _ -> 1
-            let r = randomT.Next(10,14)
-            BOUNDED( S <| sprintf "#%d" b, [rx, Lim(1u , uint32 n)]) 
-        )
+    let mShiftAmt rx = RAND <| fun () ->
+        let n = randomT.Next(1,4)
+        let b = match n with
+                | 1 -> 8
+                | 2 -> 4
+                | _ -> 1
+        let r = randomT.Next(10,14)
+        BOUNDED( S <| sprintf "#%d" b, [rx, Lim(1u , uint32 n)])
+    
 
     let inSide r rx = 
         FORALL [
@@ -433,30 +511,46 @@ module VRandom =
             BRA ++ RG r ++ KET ++ SEP ++ mImm
         ]
    
-    let memLoads mData mBase mExtra = 
-        S "LDR" ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase mExtra)
-        |> fun tc -> BOUNDED (tc, [])
+    let memSingleTest isLoad () = 
+        let memOpCodes = ALLSTRINGS ["LDR" ; "STR"]
+        let memOpSuffs = ALLSTRINGS ["";"B"]
+        let regPool = [0..14]
+        let mData, mBase, mExtra, pool' = choose3 (CR >> CR >> CR) regPool
 
+        let memLoadsStores isLoad mData mBase mExtra = 
+            let baseOpCode = if isLoad then "LDR" else "STR"
+            S baseOpCode ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase mExtra)
+            |> (fun tc -> BOUNDED( tc, [mExtra, Lim(1u,3u)]))
+        EVALMEM <|
+            ASMLINES [ 
+                setMBase mBase
+                memLoadsStores isLoad mData mBase mExtra  
+                makeMemCheckCode pool'
+            ] 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                             MULTIPLE REGISTER MEMORY INSTRUCTIONS
+//                             -------------------------------------
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    let memMultiTest isLoad () =
     
+        let memLDMSTM isLoad mBase md1 md2 = 
+            let multiMemSuffixes = ALLSTRINGS ["IB";"IA";"DB";"DA";"EA";"ED";"FA";"FD"]
+            let opCodeBase = if isLoad then "LDM" else "STM"
+            ASMLINES [
+                setMBase mBase
+                S opCodeBase ++ multiMemSuffixes ++ WS ++ RG mBase ++ WSQ ++
+                    RANDSTRINGS ["";"!"] ++ SEP ++ S "{" ++ RG md1 ++ SEP ++ RG md2 ++ S "}"
+                ]
 
-    let memLDRX() = 
         EVALMEM <|
             let regPool = [0..14]
-            let chooseReg (pool: int list) = 
-                let chosen = pool.[randomT.Next pool.Length]
-                let pool' = List.filter ((<>) chosen) pool
-                (chosen, pool')
-            let (mData,p) = chooseReg regPool
-            let (mBase,p') = chooseReg p
-            let (mExtra, p'') = chooseReg p'
+            let mData1,mData2,mBase,pool' = choose3 (CRN13 >> CRN13 >> CR) regPool
             ASMLINES [ 
-                S "ADR" ++ WS ++ RG mBase ++ SEP ++ S "DAT3"
-                memLoads mData mBase mExtra  
-                makeDCD "DAT1" 16  
-                makeDCD "DAT2" 16
-                makeDCD "DAT3" 16 
-                makeDCD "DAT4" 16
-            ] |> (fun tc -> BOUNDED( tc, [mExtra, Lim(1u,3u)]))
+                memLDMSTM isLoad mBase mData1 mData2 
+                makeMemCheckCode pool'
+            ]
 
-
-        
