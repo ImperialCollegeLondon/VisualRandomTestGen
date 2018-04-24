@@ -50,6 +50,10 @@ module VRandom =
     /// randomly generated string from the list. compare this with ALLSTRINGS
     let RANDSTRINGS (lst: string list) = RAND (fun () -> S lst.[randomT.Next(lst.Length)])
 
+    let RANDTC (tcList: TestCode list) = RAND <| fun () ->
+            let chosenIndex = randomT.Next(tcList.Length)
+            tcList.[chosenIndex]
+
     let TESTMAP map tc =
         match tc with
         | FORALL lis -> List.map map lis |> FORALL
@@ -525,7 +529,7 @@ module VRandom =
             ASMLINES [ 
                 setMBase mBase
                 memLoadsStores isLoad mData mBase mExtra  
-                makeMemCheckCode pool'
+                (if isLoad then makeDCDs() else makeMemCheckCode pool')
             ] 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -536,14 +540,24 @@ module VRandom =
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let memMultiTest isLoad () =
-    
+     
         let memLDMSTM isLoad mBase md1 md2 = 
+            let twoRegs = RG md1 ++ SEP ++ RG md2
+            let regRange = 
+                // get ascending range:
+                let range = List.sort [md1 ; md2]
+                // check range is OK for use
+                match range.[0], range.[1] with
+                | a,b when mBase > a && mBase < b -> twoRegs // can't use this
+                | a,b when b-a > 4 -> twoRegs // range may overlap mem checking - non-optimal
+                | a, b -> RG a ++ S "-" ++ RG b
+            let memRegList = RANDTC [ twoRegs ; regRange ]
             let multiMemSuffixes = ALLSTRINGS ["IB";"IA";"DB";"DA";"EA";"ED";"FA";"FD"]
             let opCodeBase = if isLoad then "LDM" else "STM"
             ASMLINES [
                 setMBase mBase
                 S opCodeBase ++ multiMemSuffixes ++ WS ++ RG mBase ++ WSQ ++
-                    RANDSTRINGS ["";"!"] ++ SEP ++ S "{" ++ RG md1 ++ SEP ++ RG md2 ++ S "}"
+                    RANDSTRINGS ["" ; "!"] ++ SEP ++ S "{" ++ memRegList ++ S "}"
                 ]
 
         EVALMEM <|
