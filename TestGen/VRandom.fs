@@ -8,6 +8,7 @@ module VRandom =
     open System
     open VCommon
     open EEExtensions
+    open System.Security.Cryptography
 
     /// common RNG for all code
     /// this is built-in .Net and fast but not very good!
@@ -33,13 +34,18 @@ module VRandom =
     /// unspecified registers will have unconstrained random values
     type RegSpec = (int * RegBound) list
 
+    type TestRand =
+        | RAND of (unit -> TestRand)
+        | SR of string * RegSpec
+
+
     /// constructor for randomly generated assembler strings
     /// recursive definition allows register constraints to be linked to strings
     type TestCode =
-        | BOUNDED of TestCode * RegSpec
-        | RAND of (Unit->TestCode)
-        | S of string
+        | TR of TestRand
         | FORALL of TestCode list
+
+    let S s = TR (SR ( (s,[])))
 
     /// construct TestCode for exhaustive tests, one for each of the strings
     /// total number of tests will be product of all joined exhaustive tests
@@ -48,17 +54,18 @@ module VRandom =
 
     /// construct TestCode for a randomised test: every test containing this will be given a new
     /// randomly generated string from the list. compare this with ALLSTRINGS
-    let RANDSTRINGS (lst: string list) = RAND (fun () -> S lst.[randomT.Next(lst.Length)])
+    let RANDSTRINGS (lst: string list) = (fun () -> SR (lst.[randomT.Next(lst.Length)],[])) |> RAND |> TR
 
-    let RANDTC (tcList: TestCode list) = RAND <| fun () ->
-            let chosenIndex = randomT.Next(tcList.Length)
-            tcList.[chosenIndex]
+ 
+    let RANDTR (trList: TestRand list) = RAND <| fun () -> randomChoice trList
+ 
+        
+
 
     let TESTMAP map tc =
         match tc with
         | FORALL lis -> List.map map lis |> FORALL
         | _ -> failwithf "Unexpected Test case in testMap %A" tc
-
 
 
     /// Return minB..maxB RegBounds for multiple registers
@@ -79,10 +86,10 @@ module VRandom =
     /// given non-reg name it does not match
     let rec (|REGNUM|_|) tc =
         match tc with
-        | S "PC" -> Some 15
-        | S "LR" -> Some 14
-        | S "SP" -> Some 13
-        | S (MATCH "R([0-9])+" (PARSEINT n))  -> Some n
+        | SR ("PC",_) -> Some 15
+        | SR ("LR",_) -> Some 14
+        | SR ("SP",_) -> Some 13
+        | SR (MATCH "R([0-9])+" (PARSEINT n),_)  -> Some n
         | _ -> None
     
     /// Extract a list of register numbers from a TestCode
@@ -93,12 +100,11 @@ module VRandom =
     /// The reg number list is sorted in ascending order
     let rec fromRegTC (regLst: TestCode) = 
         match regLst with
-        | REGNUM n -> [n]
+        | TR (REGNUM n) -> [n]
+        | TR _ -> []
         | FORALL rLst -> 
             rLst 
-            |> List.collect (function | REGNUM n -> [n] | _ -> [])
-        | BOUNDED(tc,_) -> fromRegTC tc
-        | RAND _ -> []
+            |> List.collect fromRegTC
         | _ -> failwithf "Unexpected testcode for register number extraction: %A" regLst
         |> List.sort
      
@@ -224,18 +230,25 @@ module VRandom =
                 }
         }
 
-    /// Evaluate a TestCode value to return a list of test specifications.
+
+
+
+
+    /// Evaluate a TestCode value to return a list of TestRand test specifications.
     /// Each test spec is a function to generate (randomised) assembler
     /// paired with a RegSpec that specified compatible register value limits
     /// for multiple tests call the returned function multiple times, generating a
     /// new randomised DPath from the RegSpec for each test.
-    let rec EVAL (tc:TestCode): ((Unit->string) * RegSpec) list =
+    let rec EVAL (tc:TestCode): TestRand list =
         let combineSpec rs (s, rs') = s, joinRegSpecs rs rs'
         match tc with
         | FORALL lis -> lis |>  List.collect EVAL
-        | BOUNDED (tc, rs) -> tc |> EVAL |> List.map (combineSpec rs)
-        | RAND f -> f () |> EVAL 
-        | S s -> [(fun () -> s) , []]
+        | TR tr -> [tr]
+    
+    let rec EVALR tr =
+        match tr with
+        | RAND f -> EVALR (f())
+        | SR (s, rs) -> s,rs
 
     /// Join together assembler strings from r1 and r2.
     /// Exhaustive and randomised parts are correctly joined.
@@ -247,11 +260,12 @@ module VRandom =
             match r1, r2 with
             | FORALL rl1, r2 -> FORALL (List.map (fun r1 -> r1 ++ r2) rl1)
             | r1, FORALL rl2 -> FORALL (List.map (fun r2 -> r1 ++ r2) rl2)
-            | BOUNDED (r1, bnd), r2
-            | r1, BOUNDED (r2,bnd) -> BOUNDED (r1 ++ r2, bnd)
-            | RAND r1, r2 -> RAND (fun () -> r1() ++ r2)
-            | r1, RAND r2 -> RAND (fun () -> r1 ++ r2())
-            | S r1, S r2 -> S (r1 + r2)
+            | TR a, TR b ->
+                TR (RAND (fun () -> 
+                            let s1,rs1 = EVALR a
+                            let s2,rs2 = EVALR b
+                            SR (s1+s2, joinRegSpecs rs1  rs2)))
+                
 
     /// make a list of TestCode into an assembly program, one line each
     let rec ASMLINES lst = 
@@ -305,36 +319,64 @@ module VRandom =
     /// set of registers to use for DP instructions (not R13 or R15) 
     let dpRegNum() = match randomT.Next(14) with | 13 -> 14 | n -> n
 
-    let DPREG = RAND (fun () -> S <| sprintf "R%d" (dpRegNum()))
+    /// generate a TestRand value from a function that generates random strings
+    let toRS f = (fun () -> SR (f(),[])) |> RAND
 
-    let WS = RAND (fun () ->  S [" ";"\t"].[randomT.Next(2)])
+    /// generate a TC value from  afunction that generates random strings
+    let toTC = toRS >> TR
 
-    let WSQ = RAND (fun () -> S [" ";"\t";""].[randomT.Next(3)])
+    /// generate an RS value from a TC value (FORALLs are randomly evaluated in the TestRand)
+    let rec tcToRS tc = 
+        match tc with
+        | FORALL lst -> RAND (fun () -> tcToRS lst.[randomT.Next lst.Length])
+        | TR rs -> rs
 
-    let IMM = RAND (fun () -> S <| sprintf "#%d" (int (immediate())))
+    /// Combine a list of TCs into a single one with a random choice each time it is evaluated
+    let RANDTC tcl = tcl |> List.collect EVAL |> randomChoice |> TR
 
-
-
-      
     
+    let DPREG = toTC <| fun () -> sprintf "R%d" (dpRegNum())
 
-    let SHIFTAMT =
-        RAND (fun () ->
-                match randomT.Next(20) with
+    let WS = toTC <| fun () ->  [" ";"\t"].[randomT.Next(2)]
+
+    let WSQ = toTC <| fun () -> [" ";"\t";""].[randomT.Next(3)]
+
+    let IMM = toTC <| fun () -> sprintf "#%d" (int (immediate()))
+
+    /// evaluate a TestCode completely to generate a random string
+    let rec EvalRTC tc = 
+        match tcToRS tc with
+        | RAND tr  -> tr() |> TR |> EvalRTC
+        | SR (s, rs) -> s,rs
+    
+    let tcToS = EvalRTC >> fst
+    
+    let Bound tc rs = 
+        let (s, rs') = EvalRTC tc
+        s, joinRegSpecs rs rs'
+    
+    let makeTCBound rs = ("",rs) |> SR |> TR
+
+    let SHIFTAMT = TR ( RAND (fun () ->
+         
+          SR (  match randomT.Next(20) with
                 | n when n < 10 -> 
                     let r = dpRegNum()
                     let reg = sprintf "R%d" r
-                    BOUNDED( WS ++ S reg, [r,Lim(0u,32u)])
-                | _ -> WS ++ RAND (fun () -> (randomT.Next(0,33) |> sprintf "#%d" |> S))
-             )
-
+                    Bound (WS ++ S reg) [r,Lim(0u,32u)]
+                | _ -> EvalRTC (WS ++ toTC (fun () -> randomT.Next(0,33) |> sprintf "#%d")))
+          ))
 
     let SHIFT =
         let mapF so =
+            let (|SSS|_|) (tc:TestCode) = 
+                match tc with 
+                | TR (SR (x,_)) -> Some x 
+                | _ -> None
             match so with
-            | S "" -> S ""
-            | S "RRX" -> WSQ ++ S "," ++ WSQ ++ S "RRX"
-            | S s -> WSQ ++ S "," ++ WSQ ++ S s ++ SHIFTAMT
+            | SSS "" -> S ""
+            | SSS "RRX" -> WSQ ++ S "," ++ WSQ ++ S "RRX"
+            | SSS s -> WS ++ S "," ++ WSQ ++ S s ++ SHIFTAMT
             | _ -> failwithf "Unexpected test description found in makeshift map function"
         shiftOpRRX |> TESTMAP mapF
 
@@ -347,8 +389,9 @@ module VRandom =
             | None -> (n, DPB (uint32 dpLim))
             | Some x -> x
         elis
-        |> List.map (fun (fs,rs) -> 
-            ([0..14] |> List.map (getRegBnds rs) |> createDPath), (fs())
+        |> List.map (fun tr () -> 
+            let (asm,rs) = EVALR tr
+            ([0..14] |> List.map (getRegBnds rs) |> createDPath), asm
             )
 
     let opImm() =  WSQ ++ S "," ++ WSQ ++ S "," ++ WSQ ++ IMM
@@ -376,8 +419,6 @@ module VRandom =
     let RG (n:int) = S (sprintf "R%d" n)
 
     let makeDCD lab (numb:int) = 
-        RAND <| 
-            fun () ->
                 S lab ++ WS ++ S "DCD"  ++ WS ++ (
                     [0..numb-1] 
                     |> List.map (fun _ -> uiAllRand() |> sprintf "%d" |> S  )
@@ -435,8 +476,9 @@ module VRandom =
             | None -> (n, Lim(0u,UInt32.MaxValue))
             | Some x -> x
         elis
-        |> List.map (fun (fs,rs) -> 
-            ([0..14] |> List.map (getRegBnds rs) |> createDPath), (fs())
+        |> List.map (fun tr () -> 
+            let (s,rs) = EVALR tr
+            ([0..14] |> List.map (getRegBnds rs) |> createDPath), s
             )
     
 
@@ -484,21 +526,22 @@ module VRandom =
         let imms = [ 1;3;-1;-5;8;12;16;20;-8;-12;-16;-20]
         imms.[randomT.Next(imms.Length)]
 
-    let mImm = RAND <| fun () -> 
+    let mImm =
         S "#" ++ 
             FORALL [ 
-                RAND <| fun () -> S <| sprintf "0x%x" (makeMemImm()) 
-                RAND <| fun () -> S <| sprintf "%d" (makeMemImm()) 
+                toTC <|  fun () -> sprintf "0x%x" (makeMemImm()) 
+                toTC <| fun () -> sprintf "%d" (makeMemImm()) 
             ]
 
-    let mShiftAmt rx = RAND <| fun () ->
+    let mShiftAmt rx = TR (RAND <|  fun () ->
         let n = randomT.Next(1,4)
         let b = match n with
                 | 1 -> 8
                 | 2 -> 4
                 | _ -> 1
         let r = randomT.Next(10,14)
-        BOUNDED( S <| sprintf "#%d" b, [rx, Lim(1u , uint32 n)])
+        Bound (S <| sprintf "#%d" b) [rx, Lim(1u , uint32 n)]
+        |> SR)
     
 
     let inSide r rx = 
@@ -515,7 +558,7 @@ module VRandom =
             BRA ++ RG r ++ KET ++ SEP ++ mImm
         ]
    
-    let memSingleTest isLoad () = 
+    let memSingleTest isLoad = 
         let memOpCodes = ALLSTRINGS ["LDR" ; "STR"]
         let memOpSuffs = ALLSTRINGS ["";"B"]
         let regPool = [0..14]
@@ -523,8 +566,8 @@ module VRandom =
 
         let memLoadsStores isLoad mData mBase mExtra = 
             let baseOpCode = if isLoad then "LDR" else "STR"
-            S baseOpCode ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase mExtra)
-            |> (fun tc -> BOUNDED( tc, [mExtra, Lim(1u,3u)]))
+            S baseOpCode ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase mExtra) ++
+                makeTCBound  [mExtra, Lim(1u,3u)]
         EVALMEM <|
             ASMLINES [ 
                 setMBase mBase
@@ -539,7 +582,7 @@ module VRandom =
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let memMultiTest isLoad () =
+    let memMultiTest isLoad =
      
         let memLDMSTM isLoad mBase md1 md2 = 
             let twoRegs = RG md1 ++ SEP ++ RG md2

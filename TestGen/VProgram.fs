@@ -88,13 +88,13 @@ module VProgram =
     let runTestsInParallel paras testFns testSize =
         let numThreads = defaultParas.MaxConcurrentVisualDirs
         testFns
-        |> List.iter ( fun ((testFn: unit -> (DPath * string) list) , logRoot) -> 
+        |> List.iter ( fun ((testFns: (unit -> DPath * string) list) , logRoot) -> 
                 let logName n = sprintf "%s%d.txt" logRoot n
                 printfn "\nStarting %s" logRoot
-                let tNum = testFn().Length
+                let tNum = testFns.Length
                 let totalNum = max tNum testSize
                 let tests = 
-                    seq { while true do yield! testFn()}
+                    seq { while true do yield! (List.map (fun f -> f()) testFns)}
                     |> Seq.take totalNum
                     |> Seq.toList
                     |> List.indexed
