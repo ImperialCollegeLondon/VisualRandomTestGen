@@ -141,6 +141,7 @@ module VProgram =
             ]
         let branchTests = [
             VRandom.condBranchTests, "ConditionalBranches"
+            VRandom.computedBranchTests, "ComputedBranches"
             ]
         initCaches defaultParas
         printfn "Caches initialised"

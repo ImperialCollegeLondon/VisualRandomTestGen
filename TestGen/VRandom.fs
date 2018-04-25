@@ -325,7 +325,20 @@ module VRandom =
             S "TARGET ADD R0, R0, #1"
             ]
         |> GENTESTS
+    
 
+    let computedBranchTests =
+        ASMLINES [
+            S "MOV R0, #0"
+            S "ADR R1, DAT"
+            ALLSTRINGS [ "MOV PC, R1" ]
+            S "ADD R0, R0, #1"
+            S "ADD R0, R0, #1"
+            S "DAT ADD R0,R0,#1"
+            S "ADD R0, R0, #1"
+            S "ADD R0, R0, #1"
+            ]
+        |> GENTESTS
  ///////////////////////////////////////////////////////////////////////////////////////////////////
  //
  //                   CODE FOR ARM DP INSTRUCTION GENERATION
