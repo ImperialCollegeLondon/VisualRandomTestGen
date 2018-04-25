@@ -67,7 +67,7 @@ module VRandom =
 
     /// map over a FORALL list
     /// NB this does not operate on nested forall lists
-    let TESTMAP map tc =
+    let TESTMAP map (tc:TestCode) =
         match tc with
         | FORALL lis -> List.map map lis |> FORALL
         | _ -> failwithf "Unexpected Test case in testMap %A" tc
@@ -282,11 +282,56 @@ module VRandom =
         | a :: rest -> a ++ S "\n" ++ ASMLINES rest
         | [] -> S ""
 
- //--------------------------------------------------------------------------------
+    /// Evaluate a TestCode to make a list of functions
+    /// each specifying randomised tests.
+    /// The list elements represent exhaustive tests.
+    /// Also return a DPath dataPath which respects all 
+    /// initial register value bounds in
+    /// tc but otherwise has arbitrary randomly generated
+    /// registers and flags
+    let GENTESTS (tc:TestCode) : (unit -> DPath*string) list =
+        let testGenLst = EVAL tc
+        let getRegBnds (rs:RegSpec) n =
+            match List.tryFind (fun (r,_) -> r=n) rs with
+            | None -> (n, Lim(0u,UInt32.MaxValue))
+            | Some x -> x
+        testGenLst
+        |> List.map (fun testGenerator _ -> 
+            let (asm,regSpec) = testGenerator ()
+            [0..14] 
+            |> List.map (getRegBnds regSpec) 
+            |> createDPath
+            |> fun dataPath -> dataPath, asm )
+
+    /// TestCode for random whitespace separator
+    let WS = RAND <|  fun () -> S  [" ";"\t"].[randomT.Next(2)]
+
+    /// TestCode for random OPTIONAL whitespace separator
+    let WSQ = RAND <| fun () -> S [" ";"\t";""].[randomT.Next(3)]
+
+ ///////////////////////////////////////////////////////////////////////////////////////////////////
+ //
+ //                                 CODE FOR COND BRANCH TESTING
+ //                                 ----------------------------
+ //
+ ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    let condBranchTests =
+        let Conditions = ALLSTRINGS [ ""; "CC";"CS";"EQ";"NE";"HI";"HS";"LO";"LS";"GT";"GE";"LT";"LE";"VC";"VS"]
+        ASMLINES [
+            S "MOV R0, #0"
+            S "B" ++ Conditions ++ WS ++ S "TARGET"
+            S "MOV R0, #1"
+            S "TARGET ADD R0, R0, #1"
+            ]
+        |> GENTESTS
+
+ ///////////////////////////////////////////////////////////////////////////////////////////////////
  //
  //                   CODE FOR ARM DP INSTRUCTION GENERATION
+ //                   --------------------------------------
  //
- //--------------------------------------------------------------------------------
+ ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     let dp3OpC = 
         ALLSTRINGS [ 
@@ -325,12 +370,6 @@ module VRandom =
 
     /// TestCode for DP-valid register name string
     let DPREG = RAND <| fun () -> S (sprintf "R%d" (dpRegNum()))
-
-    /// TestCode for random whitespace separator
-    let WS = RAND <|  fun () -> S  [" ";"\t"].[randomT.Next(2)]
-
-    /// TestCode for random OPTIONAL whitespace separator
-    let WSQ = RAND <| fun () -> S [" ";"\t";""].[randomT.Next(3)]
 
     /// TestCode for random DP immediate value starting with #
     let IMM = RAND <| fun () -> S (sprintf "#%d" (int (immediate())))
@@ -466,25 +505,7 @@ module VRandom =
     let CR = liftChoose chooseReg
 
     /// choose a register other than R13
-    let CRN13 = liftChoose chooseNo13Reg
-
-    /// Evaluate a TestCode to make a list of functions
-    /// each specifying randomised tests.
-    /// The list elements represent exhaustive tests.
-    let EVALMEM lis =
-        let elis = EVAL lis
-        let getRegBnds (rs:RegSpec) n =
-            match List.tryFind (fun (r,_) -> r=n) rs with
-            | None -> (n, Lim(0u,UInt32.MaxValue))
-            | Some x -> x
-        elis
-        |> List.map (fun tr _ -> 
-            let (s,rs) = tr ()
-            [0..14] 
-            |> List.map (getRegBnds rs) 
-            |> createDPath
-            |> fun dp -> dp,s )
-            
+    let CRN13 = liftChoose chooseNo13Reg            
     
     /// TestCode of 4 DCDs defining 64 random initialised 
     /// words of memory good for testing memory instructions
@@ -554,9 +575,9 @@ module VRandom =
     let mShiftAmt rx = RAND <|  fun () ->
         let scaler = randomT.Next(1,4)
         let bnd = match scaler with
-                | 1 -> 8
-                | 2 -> 4
-                | _ -> 1
+                  | 1 -> 8
+                  | 2 -> 4
+                  | _ -> 1
         let r = randomT.Next(10,14)
         BOUNDED (S <| sprintf "#%d" scaler, [rx, Lim(1u , uint32 bnd)])
         
@@ -590,7 +611,7 @@ module VRandom =
             let baseOpCode = if isLoad then "LDR" else "STR"
             S baseOpCode ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase mExtra)
             |> fun tc -> BOUNDED( tc, [mExtra, Lim(1u,3u)])
-        EVALMEM <|
+        GENTESTS <|
             ASMLINES [ 
                 setMBase mBase
                 memLoadsStores isLoad mData mBase mExtra  
@@ -629,7 +650,7 @@ module VRandom =
                     RANDSTRINGS ["" ; "!"] ++ SEP ++ S "{" ++ memRegList ++ S "}"
                 ]
 
-        EVALMEM <|
+        GENTESTS <|
             let regPool = [0..14]
             let mData1,mData2,mBase,pool' = choose3 (CRN13 >> CRN13 >> CR) regPool
             ASMLINES [ 

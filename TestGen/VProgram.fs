@@ -139,10 +139,14 @@ module VProgram =
             VRandom.memMultiTest true, "MultMemLoads"
             VRandom.memMultiTest false, "MultMemStores"
             ]
+        let branchTests = [
+            VRandom.condBranchTests, "ConditionalBranches"
+            ]
         initCaches defaultParas
         printfn "Caches initialised"
-        runTestsInParallel defaultParas singleMemTests 80
-        runTestsInParallel defaultParas multMemTests 80
+        //runTestsInParallel defaultParas singleMemTests 80
+        //runTestsInParallel defaultParas multMemTests 80
+        runTestsInParallel defaultParas branchTests 150
         printfn "Tests completed"
         finaliseCaches defaultParas
         printfn "Caches finalised"
