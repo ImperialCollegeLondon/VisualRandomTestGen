@@ -38,10 +38,11 @@ module VRandom =
 
 
     /// constructor for randomly generated assembler strings
-    /// recursive definition allows register constraints to be linked to strings
+    /// recursive definition allows RegSpec register constraints to be linked to strings
+    /// and random generation functions
     type TestCode =
-        | BOUNDED of (TestCode * RegSpec)
         | FORALL of TestCode list
+        | BOUNDED of (TestCode * RegSpec)
         | RAND of (unit -> TestCode)
         | S of string
 
@@ -58,12 +59,14 @@ module VRandom =
         fun () -> S lst.[randomT.Next lst.Length]
         |> RAND 
 
- 
+    /// combine a lst of TestCodes as a random test (not exhaustive)
+    /// this contrasts with FORALL which will ensure exhaustive testing
     let RANDTC = FORALL >> (fun x -> RAND (fun () -> x))
  
         
 
-
+    /// map over a FORALL list
+    /// NB this does not operate on nested forall lists
     let TESTMAP map tc =
         match tc with
         | FORALL lis -> List.map map lis |> FORALL
@@ -74,17 +77,16 @@ module VRandom =
     let makeBounds rl minB maxB =
         rl |> List.map (fun n -> n, Lim(minB,maxB))
 
-    /// Return 
-    let makeRegTC (iLst: int list) = List.map (fun n -> "R" + n.ToString()) iLst
-
+    /// shorthand alias for the EExtensions regex matcher AP
     let (|MATCH|_|) re s = String.regexMatch re s 
 
+    /// AP to parse integers
     let (|PARSEINT|_|) s = 
         match Int32.TryParse s with 
         | true , n -> Some n 
         | false , _ -> None
     
-    /// Active Pattern to return reg int from reg string: R3 -> 3
+    /// AP to return reg int from reg string: R3 -> 3
     /// given non-reg name it does not match
     let rec (|REGNUM|_|) tc =
         match tc with
@@ -139,13 +141,6 @@ module VRandom =
             | Some b1, Some b2 -> [r, intersectBounds b1 b2]
         [0..14] |> List.collect (fun r -> getRegBnd r)
         
-        
-        
-
-
-
-   
-
 
     /// generate arbitrary random uint32
     /// cannot do this with System.Random directly because of positive int restriction
@@ -232,10 +227,6 @@ module VRandom =
                 }
         }
 
-
-
-
-
     /// Evaluate a TestCode value to return a list of  test specifications.
     /// Each test spec is a function to generate (randomised) assembler
     /// paired with a RegSpec that specified compatible register value limits
@@ -260,8 +251,13 @@ module VRandom =
             |> List.map ( fun f _ -> 
                 match f() with 
                 | s , rs' -> s, joinRegSpecs rs rs'
-                )
-    
+            )
+
+    /// evaluate a TestCode completely to generate a random string paired with a RegSpec
+    let rec EVALS tc = 
+        match EVAL tc with
+        | h :: t as lst -> lst |> randomChoice |> fun f ->f()
+        | [] -> failwithf "What? %A is empty when evaluated!" tc
 
     /// Join together assembler strings from r1 and r2.
     /// Exhaustive and randomised parts are correctly joined.
@@ -286,16 +282,11 @@ module VRandom =
         | a :: rest -> a ++ S "\n" ++ ASMLINES rest
         | [] -> S ""
 
-
  //--------------------------------------------------------------------------------
  //
  //                   CODE FOR ARM DP INSTRUCTION GENERATION
  //
  //--------------------------------------------------------------------------------
-
-
- 
-
 
     let dp3OpC = 
         ALLSTRINGS [ 
@@ -313,7 +304,6 @@ module VRandom =
 
     /// shift operands (with RRX)
     let shiftOpRRX = ALLSTRINGS [ "" ; "RRX" ; "ASR" ; "LSR" ; "LSL" ; "ROR" ]
-
 
     /// generate a random DP immediate constant that is mostly of valid form
     let immediate() =
@@ -333,22 +323,19 @@ module VRandom =
     let dpRegNum() = match randomT.Next(14) with | 13 -> 14 | n -> n
 
 
-    
+    /// TestCode for DP-valid register name string
     let DPREG = RAND <| fun () -> S (sprintf "R%d" (dpRegNum()))
 
+    /// TestCode for random whitespace separator
     let WS = RAND <|  fun () -> S  [" ";"\t"].[randomT.Next(2)]
 
+    /// TestCode for random OPTIONAL whitespace separator
     let WSQ = RAND <| fun () -> S [" ";"\t";""].[randomT.Next(3)]
 
+    /// TestCode for random DP immediate value starting with #
     let IMM = RAND <| fun () -> S (sprintf "#%d" (int (immediate())))
 
     // let IMM = RAND <| fun () -> () |> immediate |> int |> sprintf "#%d" |>  S ?
-
-    /// evaluate a TestCode completely to generate a random string paired with a RegSpec
-    let rec EVALS tc = 
-        match EVAL tc with
-        | h :: t as lst -> lst |> randomChoice |> fun f ->f()
-        | [] -> failwithf "What? %A is empty when evaluated!" tc
 
     let SHIFTAMT = 
         RAND <| fun () ->         
@@ -403,63 +390,87 @@ module VRandom =
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /// TestCode for ',' separator with opt white space
     let SEP = WSQ ++ S "," ++ WSQ
+
+    /// TestCode for open '[' with opt white space after
     let BRA = S "[" ++ WSQ
+
+    /// TestCode for close ']' with opt white space before
     let KET = WSQ ++ S "]" 
 
+    /// TestCode for register n
     let RG (n:int) = S (sprintf "R%d" n)
 
+    /// TestCode for a DCD with numb random data words
     let makeDCD lab (numb:int) = 
                 S lab ++ WS ++ S "DCD"  ++ WS ++ (
                     [0..numb-1] 
                     |> List.map (fun _ -> uiAllRand() |> sprintf "%d" |> S  )
                     |> List.reduce (fun a b -> a ++ SEP ++ b))
 
+    /// Choose a random number from pool.
+    /// Return chosen number, rest of pool
     let chooseReg (pool: int list) = 
         let chosen = pool.[randomT.Next pool.Length]
         let pool' = List.filter ((<>) chosen) pool
         (chosen, pool')
 
+    /// Choose a random number - not 13 - from pool
+    /// return chosen number paired with rest of pool
     let chooseNo13Reg pool =
         let poolNo13 = List.filter ((<>) 13) pool
         let chosen = poolNo13.[randomT.Next poolNo13.Length]
         let pool' = List.filter ((<>) chosen) pool
         (chosen, pool')
     
+    /// convert a choose function to
+    /// one operating on a chosen list * pool monad
+    /// so that multiple register choices can conveniently
+    /// be chained
     let liftChoose chooseFun (chosenLst, pool) =
         let choice, pool' = chooseFun pool
         chosenLst @ [choice], pool'
 
+    /// convert chosen list to a 2-tuple
     let choose2 choosers pool =
                 match ([],pool) |> choosers with
                 | [a;b], p -> a,b,p
                 | _ -> failwith "What - can't happen!"
 
-    
+    /// convert chosen list to a 3-tuple
     let choose3 choosers pool =
                 match ([],pool) |> choosers with
                 | [a;b;c], p -> a,b,c,p
                 | _ -> failwith "What - can't happen!"
 
+    /// convert chosen list to a 4-tuple
     let choose4 choosers pool =
             match ([], pool) |> choosers with
             | [a;b;c;d], p -> a,b,c,d,p
             | _ -> failwith "What - can't happen!"
 
+    /// convert chosen list to a 5-tuple
     let choose5 choosers pool =
         match ([], pool) |> choosers with
         | [a;b;c;d;e], p -> a,b,c,d,e,p
         | _ -> failwith "What - can't happen!"
 
+    /// convert chosen list to a 6-tuple
     let choose6 choosers pool =
         match ([], pool) |> choosers with
         | [a;b;c;d;e;f], p -> a,b,c,d,e,f,p
         | _ -> failwith "What - can't happen!"
 
-
+    /// choose a register
     let CR = liftChoose chooseReg
+
+    /// choose a register other than R13
     let CRN13 = liftChoose chooseNo13Reg
 
+    /// Evaluate a TestCode to make a list of functions
+    /// each specifying randomised tests.
+    /// The list elements represent exhaustive tests.
     let EVALMEM lis =
         let elis = EVAL lis
         let getRegBnds (rs:RegSpec) n =
@@ -475,7 +486,8 @@ module VRandom =
             |> fun dp -> dp,s )
             
     
-
+    /// TestCode of 4 DCDs defining 64 random initialised 
+    /// words of memory good for testing memory instructions
     let makeDCDs() =
         ASMLINES [
             makeDCD "DAT1" 16  
@@ -484,8 +496,10 @@ module VRandom =
             makeDCD "DAT4" 16
         ]
 
-    /// Make DCDs and also code that Checksums them.
-    /// pool -> list of fre registers from which the 3 registers used by check are chosen.
+    /// Make as a TestCode DCDs and also the code that Checksums them.
+    /// pool -> list of free registers from which the 3 registers 
+    /// used by the check code are chosen. This is normally the last
+    /// lines of a memory test TC
     let makeMemCheckCode pool =
         let  rCheck1, rCheck2, rTmp, _ = choose3 (CR >> CR >> CRN13) pool
         ASMLINES [
@@ -509,36 +523,45 @@ module VRandom =
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                    
  
-    /// this must be the same as for that used by Visual (ensured programmatically by this project) and that used by Visual2 (no guarantee)
+    /// this must be the same as for that used by Visual 
+    /// (ensured programmatically by this project) 
+    /// and that used by Visual2 (no guarantee)
     let dataSectionStart = 0x200u
 
 
 
 
-    let makeMemImm() = 
-        let imms = [ 1;3;-1;-5;8;12;16;20;-8;-12;-16;-20]
-        imms.[randomT.Next(imms.Length)]
-
-//   Could use:   let FTOTC f = (fun _ -> f () |> S) |> RAND  
-
+    //   Could use:   let FTOTC f = (fun _ -> f () |> S) |> RAND 
+    
+    /// TestCode representing random DP immediates
+    /// in hex or decimal (add binary?)
     let mImm =
+        /// choose a suitable random immediate integer for memory offset testing
+        let makeMemImm() = 
+            let imms = [ 1;3;-1;-5;8;12;16;20;-8;-12;-16;-20]
+            imms.[randomT.Next(imms.Length)]
+
         S "#" ++ 
             RANDTC [ 
                 RAND <|  fun () -> S (sprintf "0x%x" (makeMemImm()))
                 RAND <| fun () -> S (sprintf "%d" (makeMemImm()))
             ]
 
+    /// TestCode representing random immediate scaling shift specification
+    /// applied to register rx
+    /// The string for the immediate is returned and a compatible bound on rx
+    /// that ensures the overall offset stays within limits.
     let mShiftAmt rx = RAND <|  fun () ->
-        let n = randomT.Next(1,4)
-        let b = match n with
+        let scaler = randomT.Next(1,4)
+        let bnd = match scaler with
                 | 1 -> 8
                 | 2 -> 4
                 | _ -> 1
         let r = randomT.Next(10,14)
-        BOUNDED (S <| sprintf "#%d" b, [rx, Lim(1u , uint32 n)])
+        BOUNDED (S <| sprintf "#%d" scaler, [rx, Lim(1u , uint32 bnd)])
         
     
-
+    /// TestCode for the stuff inside [] in a LDR/STR
     let inSide r rx = 
         FORALL [
             RG r 
@@ -547,18 +570,22 @@ module VRandom =
             RG r ++ SEP ++ RG rx ++ SEP ++ FORALL [S "LSL" ; S "LSR"; S "ASR"] ++ WS ++ mShiftAmt rx
         ]
 
+    /// TestCode for the second operand (determining memory mode)
+    /// in an LDR/STR
     let memMode r rx = 
         FORALL [  
             BRA ++ inSide r rx ++ KET ++ WSQ ++ ALLSTRINGS [ "" ; "!"]
             BRA ++ RG r ++ KET ++ SEP ++ mImm
         ]
-   
+    
+    /// TestCode for a LDR/STR instruction test
+    /// isLoad determined which
     let memSingleTest isLoad = 
         let memOpCodes = ALLSTRINGS ["LDR" ; "STR"]
         let memOpSuffs = ALLSTRINGS ["";"B"]
         let regPool = [0..14]
         let mData, mBase, mExtra, pool' = choose3 (CR >> CR >> CR) regPool
-
+        /// TestCode for a single random LDR(B)/STR(B) instruction
         let memLoadsStores isLoad mData mBase mExtra = 
             let baseOpCode = if isLoad then "LDR" else "STR"
             S baseOpCode ++ ALLSTRINGS [ "" ; "B"] ++ WS ++ RG mData ++ SEP ++ (memMode mBase mExtra)
@@ -577,8 +604,12 @@ module VRandom =
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /// TestCode for a multiple register memory instruction test
     let memMultiTest isLoad =
-     
+
+        /// TestCode for a single randomly generated LDM/STM
+        /// with an ADR that sets the base register to a suitable
+        /// value to ensure memory address is within limits.
         let memLDMSTM isLoad mBase md1 md2 = 
             let twoRegs = RG md1 ++ SEP ++ RG md2
             let regRange = 
