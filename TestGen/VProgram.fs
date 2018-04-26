@@ -146,9 +146,9 @@ module VProgram =
         initCaches defaultParas
         printfn "Caches initialised"
         [
-            tests
-            singleMemTests
-            multMemTests
+            //tests
+            //singleMemTests
+            //multMemTests
             branchTests
         ] 
         |> List.iter (runTestsInParallel defaultParas)

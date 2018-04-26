@@ -268,7 +268,7 @@ module VTestDSL =
     /// initial register value bounds in
     /// tc but otherwise has arbitrary randomly generated
     /// registers and flags
-    let genTests (flagsInit: unit->Flags) (defaultBounds: unit -> uint32) (tc:TestCode) : (unit -> DPath*string) list =
+    let genTests (flagsInit: unit->Flags) (defaultBounds: int -> uint32) (tc:TestCode) : (unit -> DPath*string) list =
         /// evaluates RegSpec and returns a compatible random value for register number reg
         /// registers not mentioned in RegSpec get arbitrary unint32 values
 
@@ -281,7 +281,7 @@ module VTestDSL =
         let testGenLst = EVAL tc
         let getRegBnd (rs:RegSpec) n =
             match List.tryFind (fun (r,_) -> r=n) rs with
-            | None -> defaultBounds()
+            | None -> defaultBounds n
             | Some (_,x) -> genInitRegVal x ()
         testGenLst
         |> List.map (fun testGenerator _ -> 
@@ -308,7 +308,7 @@ module VTestDSL =
         genTests randomFlags (fun _ -> uiAllRand())
 
     let GENTESTSZEROINIT = 
-        genTests (fun _ -> {FN=false;FZ=false;FC=false;FV=false}) (fun _ -> 0u)
+        genTests (fun _ -> {FN=false;FZ=false;FC=false;FV=false}) (function | 13 -> 0xff000000u | _ -> 0u)
 
         
     /// TestCode for random whitespace separator

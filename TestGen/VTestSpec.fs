@@ -114,7 +114,7 @@ module VTestSpec =
 
     /// evaluate a TestCode using default register limits corresponding to DP corner cases
     /// these are over-ridden by any limits in the specification
-    let DPGENTESTS dpLim = genTests randomFlags (dpRand dpLim)
+    let DPGENTESTS dpLim = genTests randomFlags (fun _ -> dpRand dpLim ())
 
     let opImm() =  WSQ ++ S "," ++ WSQ ++ IMM
     let opShift() = WSQ ++ S "," ++ WSQ ++ DPREG ++ SHIFT

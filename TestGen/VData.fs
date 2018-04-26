@@ -114,8 +114,11 @@ module VData =
     /// returns (n, maincode, postlude)
     /// n is length of postlude
     let GETWRAPPER regs flags memBase =
+        let regDefVals = 
+            [0..14]
+            |> List.map (function |13 -> 0xff000000u | _ -> 0u)
         let main =
-            if List.forall ((=) 0u) regs && (flags.FN || flags.FC || flags.FZ || flags.FV = false)
+            if regs = regDefVals && (flags.FN || flags.FC || flags.FZ || flags.FV = false)
             then ""
             else
                 SETFLAGS flags +
