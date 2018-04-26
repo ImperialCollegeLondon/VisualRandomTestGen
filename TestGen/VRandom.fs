@@ -192,39 +192,16 @@ module VRandom =
                     uiRangeRand(large - un, large + un)
                 ]) ()
        
-    /// evaluates RegSpec and returns a compatible random value for register number reg
-    /// registers not mentioned in RegSpec get arbitrary unint32 values
-    let returnInitRegVal reg spec =
-        let minMax = (UInt32.MinValue,UInt32.MaxValue)
-        match List.tryFind (fun (r,_) -> r = reg) spec with 
-        | None -> uiRangeRand minMax ()
-        | Some (_, Lim(umin,umax)) -> uiRangeRand(umin,umax)()
-        | Some (_, DPB n) -> (dpRand (int n))()
-        | Some (_, Val n) -> n
 
 
     /// Create a randomised DPath value (registers + flags)
-    /// Register values are constrained by rs limits
-    let createDPath (rs: RegSpec) =
-        let randTF() = 
-            match randomT.Next(2) with 
-            | 0 -> false 
-            | _ -> true 
-
-        let regs =
-            [0..14]
-            |> List.map (fun n -> (returnInitRegVal n rs))
-
-        let nz = randomT.Next(3)
+    /// Register values are initialised by regInits function created in genTests
+    let createDPath (flagInits: unit -> Flags) (regInits: (int -> uint32)) =
         {
-            TRegs = regs
-            TFlags = 
-                {
-                    FC=randTF() ; 
-                    FN = nz = 2 ; 
-                    FV =randTF() ; 
-                    FZ = nz = 1
-                }
+            TRegs =
+                [0..14]
+                |> List.map regInits
+            TFlags = flagInits()
         }
 
     /// Evaluate a TestCode value to return a list of  test specifications.
@@ -282,6 +259,9 @@ module VRandom =
         | a :: rest -> a ++ S "\n" ++ ASMLINES rest
         | [] -> S ""
 
+
+    let genAnyValue = uiRangeRand (UInt32.MinValue,UInt32.MaxValue)
+
     /// Evaluate a TestCode to make a list of functions
     /// each specifying randomised tests.
     /// The list elements represent exhaustive tests.
@@ -289,20 +269,49 @@ module VRandom =
     /// initial register value bounds in
     /// tc but otherwise has arbitrary randomly generated
     /// registers and flags
-    let GENTESTS (tc:TestCode) : (unit -> DPath*string) list =
+    let genTests (flagsInit: unit->Flags) (defaultBounds: unit -> uint32) (tc:TestCode) : (unit -> DPath*string) list =
+        /// evaluates RegSpec and returns a compatible random value for register number reg
+        /// registers not mentioned in RegSpec get arbitrary unint32 values
+
+        let genInitRegVal bound =
+            match bound with
+            | Lim(umin,umax) -> uiRangeRand(umin,umax)
+            | DPB n -> (dpRand (int n))
+            | Val n -> fun () -> n
+
         let testGenLst = EVAL tc
-        let getRegBnds (rs:RegSpec) n =
+        let getRegBnd (rs:RegSpec) n =
             match List.tryFind (fun (r,_) -> r=n) rs with
-            | None -> (n, Lim(0u,UInt32.MaxValue))
-            | Some x -> x
+            | None -> defaultBounds()
+            | Some (_,x) -> genInitRegVal x ()
         testGenLst
         |> List.map (fun testGenerator _ -> 
             let (asm,regSpec) = testGenerator ()
-            [0..14] 
-            |> List.map (getRegBnds regSpec) 
-            |> createDPath
+            (flagsInit, getRegBnd regSpec)
+            ||> createDPath
             |> fun dataPath -> dataPath, asm )
 
+    let randomFlags() =
+        let randTF() = 
+            match randomT.Next(2) with 
+            | 0 -> false 
+            | _ -> true 
+        let nz = randomT.Next(3)
+        {
+            FC=randTF() ; 
+            FN = nz = 2 ; 
+            FV =randTF() ; 
+            FZ = nz = 1
+        }
+
+
+    let GENTESTS = 
+        genTests randomFlags (fun _ -> uiAllRand())
+
+    let GENTESTSZEROINIT = 
+        genTests (fun _ -> {FN=false;FZ=false;FC=false;FV=false}) (fun _ -> 0u)
+
+        
     /// TestCode for random whitespace separator
     let WS = RAND <|  fun () -> S  [" ";"\t"].[randomT.Next(2)]
 
@@ -330,15 +339,18 @@ module VRandom =
     let computedBranchTests =
         ASMLINES [
             S "MOV R0, #0"
-            S "ADR R1, DAT"
-            ALLSTRINGS [ "MOV PC, R1" ]
+            S "ADR R1, TARGET"
+            S "ADR R2, TARGETADDR"
+            ALLSTRINGS [ "MOV PC, R1"; "MOV R1, PC"; "LDR PC, [R2]"; "STR PC, [R2]" ]
             S "ADD R0, R0, #1"
             S "ADD R0, R0, #1"
-            S "DAT ADD R0,R0,#1"
+            S "TARGET ADD R0, R0, #1"
             S "ADD R0, R0, #1"
             S "ADD R0, R0, #1"
+            S "LDR R3, [R2]"
+            S "TARGETADDR DCD TARGET"
             ]
-        |> GENTESTS
+        |> GENTESTSZEROINIT
  ///////////////////////////////////////////////////////////////////////////////////////////////////
  //
  //                   CODE FOR ARM DP INSTRUCTION GENERATION
@@ -409,30 +421,17 @@ module VRandom =
 
     /// evaluate a TestCode using default register limits corresponding to DP corner cases
     /// these are over-ridden by any limits in the specification
-    let EVALDP dpLim lis =
-        let elis = EVAL lis
-        let getRegBnds (rs:RegSpec) n =
-            match List.tryFind (fun (r,_) -> r=n) rs with
-            | None -> (n, DPB (uint32 dpLim))
-            | Some x -> x
-        elis
-        |> List.map ( fun tr _ -> 
-            let (asm,rs) = tr()
-            [0..14] 
-            |> List.map (getRegBnds rs) 
-            |> createDPath
-            |> fun dp -> dp, asm )
-            
+    let DPGENTESTS dpLim = genTests randomFlags (dpRand dpLim)
 
-    let opImm() =  WSQ ++ S "," ++ WSQ ++ S "," ++ WSQ ++ IMM
+    let opImm() =  WSQ ++ S "," ++ WSQ ++ IMM
     let opShift() = WSQ ++ S "," ++ WSQ ++ DPREG ++ SHIFT
     let op2() = WSQ ++ S "," ++ DPREG
-    let makeDPOp opc ops = EVALDP 4 <|  opc ++ WS ++ DPREG ++ ops
+    let makeDPOp opc ops = DPGENTESTS 4 <|  opc ++ WS ++ DPREG ++ ops
 
-    let dp3Shifts() = makeDPOp dp3OpC  (op2()  ++ opShift())
-    let dp3Imms() = makeDPOp dp3OpC (op2() ++ opImm())
-    let dp2Shifts() = makeDPOp dp2OpC (WSQ ++ opShift())
-    let dp2Imms() = makeDPOp dp2OpC (opImm())
+    let dp3Shifts = makeDPOp dp3OpC  (op2()  ++ opShift())
+    let dp3Imms = makeDPOp dp3OpC (op2() ++ opImm())
+    let dp2Shifts = makeDPOp dp2OpC (WSQ ++ opShift())
+    let dp2Imms = makeDPOp dp2OpC (opImm())
 
 
 

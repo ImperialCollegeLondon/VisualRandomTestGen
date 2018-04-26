@@ -1,3 +1,74 @@
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid source.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid source.</syntax-error>"; "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid first operand.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid first operand.</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid source.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid source.</syntax-error>"; "</VisUAL>"|]
+ line="21">Invalid source.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid source.</syntax-error>"; "</VisUAL>"|]
+ line="21">Invalid source.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="21">Invalid source.</syntax-error>"; "</VisUAL>"|]
+ line="64">Invalid source address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid source address specification.</syntax-error>";
+  "</VisUAL>"|]
  line="64">Attempting to perform unaligned word accessruntime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
@@ -52,8 +123,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x8e</code>";
-  "        <register name="R0">0x8E</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xf</code>";
+  "        <register name="R0">0xF</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -69,8 +140,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xfc00</code>";
-  "        <register name="R0">0xFC8E</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x7100</code>";
+  "        <register name="R0">0x710F</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -86,6 +157,16 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
+ line="64">Invalid source address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid source address specification.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Invalid destination address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
+  "</VisUAL>"|]
  line="64">Attempting to perform unaligned word accessruntime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
@@ -140,8 +221,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x99</code>";
-  "        <register name="R0">0x99</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xca</code>";
+  "        <register name="R0">0xCA</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -157,184 +238,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x2700</code>";
-  "        <register name="R0">0x2799</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x80000000</code>";
-  "        <register name="R0">0x80000000</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
-  "        <register name="R0">0x1</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xd8</code>";
-  "        <register name="R0">0xD8</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x500</code>";
-  "        <register name="R0">0x5D8</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="63">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0xFFFFFFFF</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0xFFFFFFFE</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
-  "        <register name="R0">0x1</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xc0</code>";
-  "        <register name="R0">0xC0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x3700</code>";
-  "        <register name="R0">0x37C0</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x7f00</code>";
+  "        <register name="R0">0x7FCA</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -355,12 +260,67 @@
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
   "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
   "</VisUAL>"|]
- line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+ line="64">Invalid destination address specification.syntax error in
 :[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
   "</VisUAL>"|]
- line="64">Attempting to perform unaligned word accessruntime error in
+ line="66">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="66">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="65">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="65">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="67">List of registers to load cannot include R13 (SP).syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="67">List of registers to load cannot include R13 (SP).</syntax-error>";
+  "</VisUAL>"|]
+ line="21">Invalid immediate operand value.runtime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
   "        <code>MOV R0, #0</code>";
@@ -414,8 +374,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x11</code>";
-  "        <register name="R0">0x11</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x80000004</code>";
+  "        <register name="R0">0x80000004</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -431,9 +391,9 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xe900</code>";
-  "        <register name="R0">0xE911</register>";
-  "        <register name="R1">0x0</register>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x80000002</code>";
+  "        <register name="R0">0x80000004</register>";
+  "        <register name="R1">0x80000002</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
   "        <register name="R4">0x0</register>";
@@ -448,7 +408,7 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
+ line="21">Invalid immediate operand value.runtime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
   "        <code>MOV R0, #0x80000000</code>";
@@ -485,8 +445,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #0</code>";
-  "        <register name="R0">0x0</register>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -502,8 +462,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x3</code>";
-  "        <register name="R0">0x3</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x0</code>";
+  "        <register name="R0">0x0</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -519,9 +479,9 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0xf7</code>";
-  "        <register name="R0">0x3</register>";
-  "        <register name="R1">0xF7</register>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x7ffffffc</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x7FFFFFFC</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
   "        <register name="R4">0x0</register>";
@@ -540,6 +500,56 @@
 :[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
   "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) or R15 (PC) as destination.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as destination.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Invalid destination address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
   "</VisUAL>"|]
  line="64">Attempting to perform unaligned word accessruntime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
@@ -578,96 +588,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xd6</code>";
-  "        <register name="R0">0xD6</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x5800</code>";
-  "        <register name="R0">0x58D6</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x7FFFFFFF</code>";
-  "        <register name="R0">0x7FFFFFFF</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0xFFFFFFFE</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
+  "        <register name="R0">0x1</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -700,385 +622,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x7000</code>";
-  "        <register name="R0">0x7094</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xc8</code>";
-  "        <register name="R0">0xC8</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xb100</code>";
-  "        <register name="R0">0xB1C8</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x80000000</code>";
-  "        <register name="R0">0x80000000</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x22</code>";
-  "        <register name="R0">0x22</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xff00</code>";
-  "        <register name="R0">0xFF22</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="64">Invalid source address specification.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Invalid source address specification.</syntax-error>";
-  "</VisUAL>"|]
- line="64">Cannot use R13 (SP) or R15 (PC) as offset.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as offset.</syntax-error>";
-  "</VisUAL>"|]
- line="64">Cannot use R13 (SP) or R15 (PC) as offset.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as offset.</syntax-error>";
-  "</VisUAL>"|]
- line="64">Cannot use R13 (SP) or R15 (PC) as offset.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Cannot use R13 (SP) or R15 (PC) as offset.</syntax-error>";
-  "</VisUAL>"|]
- line="63">Cannot use R13 (SP) or R15 (PC) as offset.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="63">Cannot use R13 (SP) or R15 (PC) as offset.</syntax-error>";
-  "</VisUAL>"|]
- line="64">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x80000000</code>";
-  "        <register name="R0">0x80000000</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
-  "        <register name="R0">0x1</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xa6</code>";
-  "        <register name="R0">0xA6</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xeb00</code>";
-  "        <register name="R0">0xEBA6</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x80000000</code>";
-  "        <register name="R0">0x80000000</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xc7</code>";
-  "        <register name="R0">0xC7</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x6400</code>";
-  "        <register name="R0">0x64C7</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x6100</code>";
+  "        <register name="R0">0x6194</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1148,8 +693,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xc7</code>";
-  "        <register name="R0">0xC7</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xdc</code>";
+  "        <register name="R0">0xDC</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1165,8 +710,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x2400</code>";
-  "        <register name="R0">0x24C7</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x8d00</code>";
+  "        <register name="R0">0x8DDC</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1182,11 +727,11 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="62">Attempting to perform unaligned word accessruntime error in
+ line="64">Attempting to perform unaligned word accessruntime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0xFFFFFFFF</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
+  "        <code>MOV R0, #0</code>";
+  "        <register name="R0">0x0</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1203,7 +748,7 @@
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
   "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R0">0x0</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1219,8 +764,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #0</code>";
+  "        <register name="R0">0x0</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1236,8 +781,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xd</code>";
-  "        <register name="R0">0xD</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x96</code>";
+  "        <register name="R0">0x96</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1253,8 +798,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xef00</code>";
-  "        <register name="R0">0xEF0D</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x6c00</code>";
+  "        <register name="R0">0x6C96</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1270,7 +815,7 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="63">Attempting to perform unaligned word accessruntime error in
+ line="64">Attempting to perform unaligned word accessruntime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
   "        <code>MOV R0, #0x7FFFFFFF</code>";
@@ -1324,8 +869,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xd2</code>";
-  "        <register name="R0">0xD2</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x63</code>";
+  "        <register name="R0">0x63</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1341,8 +886,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x7600</code>";
-  "        <register name="R0">0x76D2</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xba00</code>";
+  "        <register name="R0">0xBA63</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1358,21 +903,16 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="64">Invalid source address specification.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Invalid source address specification.</syntax-error>";
-  "</VisUAL>"|]
  line="64">Invalid destination address specification.syntax error in
 :[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
   "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
   "</VisUAL>"|]
- line="63">Attempting to perform unaligned word accessruntime error in
+ line="21">Invalid immediate operand value.runtime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0</code>";
-  "        <register name="R0">0x0</register>";
+  "        <code>MOV R0, #0x80000000</code>";
+  "        <register name="R0">0x80000000</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1405,8 +945,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
-  "        <register name="R0">0x1</register>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1422,8 +962,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x2</code>";
-  "        <register name="R0">0x2</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x3</code>";
+  "        <register name="R0">0x3</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1439,9 +979,9 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x23</code>";
-  "        <register name="R0">0x2</register>";
-  "        <register name="R1">0x23</register>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x4</code>";
+  "        <register name="R0">0x3</register>";
+  "        <register name="R1">0x4</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
   "        <register name="R4">0x0</register>";
@@ -1456,17 +996,7 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="64">Invalid destination address specification.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
-  "</VisUAL>"|]
- line="64">Invalid source address specification.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="64">Invalid source address specification.</syntax-error>";
-  "</VisUAL>"|]
- line="64">Attempting to perform unaligned word accessruntime error in
+ line="21">Invalid immediate operand value.runtime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
   "        <code>MOV R0, #0xFFFFFFFF</code>";
@@ -1520,8 +1050,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x3</code>";
-  "        <register name="R0">0x3</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x7ffffffe</code>";
+  "        <register name="R0">0x7FFFFFFE</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1537,9 +1067,9 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x4b</code>";
-  "        <register name="R0">0x3</register>";
-  "        <register name="R1">0x4B</register>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x80000002</code>";
+  "        <register name="R0">0x7FFFFFFE</register>";
+  "        <register name="R1">0x80000002</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
   "        <register name="R4">0x0</register>";
@@ -1554,95 +1084,7 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
-[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x7FFFFFFF</code>";
-  "        <register name="R0">0x7FFFFFFF</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0xFFFFFFFE</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #0</code>";
-  "        <register name="R0">0x0</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x3</code>";
-  "        <register name="R0">0x3</register>";
-  "        <register name="R1">0x0</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0xe1</code>";
-  "        <register name="R0">0x3</register>";
-  "        <register name="R1">0xE1</register>";
-  "        <register name="R2">0x0</register>";
-  "        <register name="R3">0x0</register>";
-  "        <register name="R4">0x0</register>";
-  "        <register name="R5">0x0</register>";
-  "        <register name="R6">0x0</register>";
-  "        <register name="R7">0x0</register>";
-  "        <register name="R8">0x0</register>";
-  "        <register name="R9">0x0</register>";
-  "        <register name="R10">0x0</register>";
-  "        <register name="R11">0x0</register>";
-  "        <register name="R12">0x0</register>";
-  "        <register name="R13">0xFF000000</register>";
-  "        <register name="R14">0x0</register>";
-  "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
+ line="21">Invalid immediate operand value.runtime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
   "        <code>MOV R0, #0x80000000</code>";
@@ -1696,8 +1138,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x3</code>";
-  "        <register name="R0">0x3</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xffffffff</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1713,9 +1155,9 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x4d</code>";
-  "        <register name="R0">0x3</register>";
-  "        <register name="R1">0x4D</register>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x4</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
+  "        <register name="R1">0x4</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
   "        <register name="R4">0x0</register>";
@@ -1730,11 +1172,11 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
+ line="21">Invalid immediate operand value.runtime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x7FFFFFFF</code>";
-  "        <register name="R0">0x7FFFFFFF</register>";
+  "        <code>MOV R0, #0xFFFFFFFF</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1784,8 +1226,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x2</code>";
-  "        <register name="R0">0x2</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xffffffff</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1801,9 +1243,9 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x4c</code>";
-  "        <register name="R0">0x2</register>";
-  "        <register name="R1">0x4C</register>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x80000003</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
+  "        <register name="R1">0x80000003</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
   "        <register name="R4">0x0</register>";
@@ -1818,16 +1260,11 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="63">Invalid destination address specification.syntax error in
-:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
-  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
-  "    <syntax-error line="63">Invalid destination address specification.</syntax-error>";
-  "</VisUAL>"|]
- line="64">Attempting to perform unaligned word accessruntime error in
+ line="21">Invalid immediate operand value.runtime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
-  "        <code>MOV R0, #0x80000000</code>";
-  "        <register name="R0">0x80000000</register>";
+  "        <code>MOV R0, #0x7FFFFFFF</code>";
+  "        <register name="R0">0x7FFFFFFF</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1844,7 +1281,7 @@
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
   "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
-  "        <register name="R0">0x0</register>";
+  "        <register name="R0">0xFFFFFFFE</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1862,6 +1299,765 @@
   "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
   "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
   "        <register name="R0">0xFFFFFFFF</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x7ffffffd</code>";
+  "        <register name="R0">0x7FFFFFFD</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x80000002</code>";
+  "        <register name="R0">0x7FFFFFFD</register>";
+  "        <register name="R1">0x80000002</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="64">Cannot use R13 (SP) as source base address.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) as source base address.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) as source base address.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) as source base address.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) as source base address.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) as source base address.</syntax-error>";
+  "</VisUAL>"|]
+ line="63">Cannot use R13 (SP) as source base address.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="63">Cannot use R13 (SP) as source base address.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) as source base address.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) as source base address.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Cannot use R13 (SP) as source base address.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Cannot use R13 (SP) as source base address.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Invalid source address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid source address specification.</syntax-error>";
+  "</VisUAL>"|]
+ line="63">Invalid source address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="63">Invalid source address specification.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Invalid destination address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Attempting to perform unaligned word accessruntime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #0</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x3d</code>";
+  "        <register name="R0">0x3D</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x9700</code>";
+  "        <register name="R0">0x973D</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="21">Invalid immediate operand value.runtime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0x7FFFFFFF</code>";
+  "        <register name="R0">0x7FFFFFFF</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #0</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x3</code>";
+  "        <register name="R0">0x3</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0xffffffff</code>";
+  "        <register name="R0">0x3</register>";
+  "        <register name="R1">0xFFFFFFFF</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="21">Invalid immediate operand value.runtime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0xFFFFFFFF</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #0</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x80000003</code>";
+  "        <register name="R0">0x80000003</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x0</code>";
+  "        <register name="R0">0x80000003</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="21">Invalid immediate operand value.runtime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0x80000000</code>";
+  "        <register name="R0">0x80000000</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
+  "        <register name="R0">0x1</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x4</code>";
+  "        <register name="R0">0x4</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x80000000</code>";
+  "        <register name="R0">0x4</register>";
+  "        <register name="R1">0x80000000</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="21">Invalid immediate operand value.runtime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0x7FFFFFFF</code>";
+  "        <register name="R0">0x7FFFFFFF</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
+  "        <register name="R0">0xFFFFFFFF</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0xfffffffe</code>";
+  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>MOV R1, #0x80000001</code>";
+  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R1">0x80000001</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="64">Attempting to perform unaligned word accessruntime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0x7FFFFFFF</code>";
+  "        <register name="R0">0x7FFFFFFF</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
+  "        <register name="R0">0x1</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x7c</code>";
+  "        <register name="R0">0x7C</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x6a00</code>";
+  "        <register name="R0">0x6A7C</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="64">Invalid source address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid source address specification.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Invalid destination address specification.syntax error in
+:[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">";
+  "    <syntax-error line="64">Invalid destination address specification.</syntax-error>";
+  "</VisUAL>"|]
+ line="64">Attempting to perform unaligned word accessruntime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0x7FFFFFFF</code>";
+  "        <register name="R0">0x7FFFFFFF</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0xFFFFFFFE</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
+  "        <register name="R0">0x1</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x54</code>";
+  "        <register name="R0">0x54</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xd900</code>";
+  "        <register name="R0">0xD954</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x18</register>"; ...|]
+ line="64">Attempting to perform unaligned word accessruntime error in
+[|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
+  "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
+  "        <code>MOV R0, #0x80000000</code>";
+  "        <register name="R0">0x80000000</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0x8</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="2">"; "        <code>ADDS R0, R0, R0</code>";
+  "        <register name="R0">0x0</register>";
+  "        <register name="R1">0x0</register>";
+  "        <register name="R2">0x0</register>";
+  "        <register name="R3">0x0</register>";
+  "        <register name="R4">0x0</register>";
+  "        <register name="R5">0x0</register>";
+  "        <register name="R6">0x0</register>";
+  "        <register name="R7">0x0</register>";
+  "        <register name="R8">0x0</register>";
+  "        <register name="R9">0x0</register>";
+  "        <register name="R10">0x0</register>";
+  "        <register name="R11">0x0</register>";
+  "        <register name="R12">0x0</register>";
+  "        <register name="R13">0xFF000000</register>";
+  "        <register name="R14">0x0</register>";
+  "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
+  "        <register name="R0">0x1</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1894,8 +2090,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x6f00</code>";
-  "        <register name="R0">0x6FA1</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0xf900</code>";
+  "        <register name="R0">0xF9A1</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1911,7 +2107,7 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x18</register>"; ...|]
- line="64">Attempting to perform unaligned word accessruntime error in
+ line="63">Attempting to perform unaligned word accessruntime error in
 [|"<?xml version="1.0" encoding="UTF-8" standalone="no"?>";
   "<VisUAL xmlns="http://bitbucket.org/salmanarif/visual">"; "    <line id="1">";
   "        <code>MOV R0, #0x80000000</code>";
@@ -1948,8 +2144,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0xC</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #-1</code>";
-  "        <register name="R0">0xFFFFFFFF</register>";
+  "    </line>"; "    <line id="3">"; "        <code>MOVS R0, #1</code>";
+  "        <register name="R0">0x1</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1965,8 +2161,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x10</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x7</code>";
-  "        <register name="R0">0x7</register>";
+  "    </line>"; "    <line id="4">"; "        <code>MOV R0, #0x45</code>";
+  "        <register name="R0">0x45</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";
@@ -1982,8 +2178,8 @@
   "        <register name="R13">0xFF000000</register>";
   "        <register name="R14">0x0</register>";
   "        <register name="R15">0x14</register>"; "        <cycles>1</cycles>";
-  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x4400</code>";
-  "        <register name="R0">0x4407</register>";
+  "    </line>"; "    <line id="5">"; "        <code>ADD R0, R0, #0x7000</code>";
+  "        <register name="R0">0x7045</register>";
   "        <register name="R1">0x0</register>";
   "        <register name="R2">0x0</register>";
   "        <register name="R3">0x0</register>";

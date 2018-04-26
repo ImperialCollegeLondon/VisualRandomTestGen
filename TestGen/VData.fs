@@ -115,9 +115,12 @@ module VData =
     /// n is length of postlude
     let GETWRAPPER regs flags memBase =
         let main =
-            SETFLAGS flags +
-            SETALLREGS regs +
-            "\r\n"
+            if List.forall ((=) 0u) regs && (flags.FN || flags.FC || flags.FZ || flags.FV = false)
+            then ""
+            else
+                SETFLAGS flags +
+                SETALLREGS regs +
+                "\r\n"
         let post = POSTLUDE memBase
         main, post
             

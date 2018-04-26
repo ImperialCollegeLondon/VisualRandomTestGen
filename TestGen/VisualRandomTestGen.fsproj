@@ -8,7 +8,8 @@
   <ItemGroup>
     <Compile Include="EEExtensions.fs" />
     <Compile Include="VCommon.fs" />
-    <Compile Include="VRandom.fs" />
+    <Compile Include="VTestDSL.fs" />
+    <Compile Include="VTestSpec.fs" />
     <Compile Include="VData.fs" />
     <Compile Include="VLog.fs" />
     <Compile Include="Visual.fs" />

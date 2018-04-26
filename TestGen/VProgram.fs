@@ -7,6 +7,7 @@ module VProgram =
     open VTest
     open System.Threading
     open System.IO
+    open VTestSpec
 
     let srcDir =  __SOURCE_DIRECTORY__
 
@@ -28,7 +29,7 @@ module VProgram =
         CacheLimit = 10               // the number of results before adding to global cache
         InitFlags = {FN=false;FZ=false; FC=false;FV=false}
         InitRegs = [0u..10u..140u]          // initial values of registers R0..R14
-        MemReadBase = VRandom.dataSectionStart          // locations read from memory (currently 13 consecutive words are read)
+        MemReadBase = VTestSpec.dataSectionStart          // locations read from memory (currently 13 consecutive words are read)
         Postlude = ""                 // this is overwritten by code
         Prelude = ""                  // this is overwritten by code
     } 
@@ -49,25 +50,14 @@ module VProgram =
                 TFlags = v.State.VFlags
             } |> Some
 
-    let runDPTest (tList: (int * (DPath * string)) list) (logRoot:string) (np:int) (totalNum:int) (numThreads:int)=
+    let runDPTest (tList: (int * (DPath * string)) list) (logRoot:string) (np:int) (numThreads:int)=
         let fName = sprintf "%s%d.txt" logRoot np
         let paras = defaultParas
         let numTests = tList.Length
 
-        let mutable watch: System.Diagnostics.Stopwatch option = None
         tList
         |> List.sortDescending
         |> List.sumBy (fun (i, (path,asm)) ->
-            if i = totalNum - 5 && np = numThreads-1 then
-                watch <- Some <| System.Diagnostics.Stopwatch.StartNew()
-            match  watch with 
-            | Some w when np = numThreads - 1 && i = totalNum - 15 ->
-                w.Stop()
-                let msTime = w.Elapsed.TotalMilliseconds / (10.0 * float numThreads)
-                printfn "\n\nTime per test: %.1fms. Total time for this test set: %.1fs\n" 
-                    msTime (msTime * float numThreads * float numTests / 1000.0)
-            | _ -> ()
-
             let vso = 
                 RunVisualWithFlagsOut {
                     paras with 
@@ -82,17 +72,24 @@ module VProgram =
             printf "%d.%d " np i
             if ts.After = None then (1.0 / float tList.Length) else 0.0
            )
+
+
                 
      
     
-    let runTestsInParallel paras testFns testSize =
+    let runTestsInParallel paras testFns  =
         let numThreads = defaultParas.MaxConcurrentVisualDirs
         testFns
-        |> List.iter ( fun ((testFns: (unit -> DPath * string) list) , logRoot) -> 
+        |> List.iter ( fun ((testFns: (unit -> DPath * string) list) , logRoot, testSize) -> 
                 let logName n = sprintf "%s%d.txt" logRoot n
                 printfn "\nStarting %s" logRoot
                 let tNum = testFns.Length
                 let totalNum = max tNum testSize
+                printfn "Runnng %d tests, %.1f random tests per exhaustively tested item" totalNum (float totalNum/ float tNum)
+                let watch: System.Diagnostics.Stopwatch =
+                    System.Diagnostics.Stopwatch.StartNew()
+
+
                 let tests = 
                     seq { while true do yield! (List.map (fun f -> f()) testFns)}
                     |> Seq.take totalNum
@@ -101,9 +98,9 @@ module VProgram =
                     |> List.groupBy (fun (i,_) -> (float i * float numThreads) / float totalNum |> int)
                 tests
                 |> List.map  (fun (i, tLis) -> async {
-                    let errorFrac = runDPTest tLis logRoot i totalNum numThreads
+                    let errorFrac = runDPTest tLis logRoot i numThreads
                     return errorFrac
-                    })
+                })
                 |> Async.Parallel
                 |> Async.RunSynchronously
                 |> Array.average
@@ -112,42 +109,49 @@ module VProgram =
                 List.init  paras.MaxConcurrentVisualDirs (fun n ->
                     paras.WorkFileDir + logName n
                     |> fun fn -> 
-                            let txt = File.ReadAllText fn
-                            File.Delete fn
-                            txt
+                            match File.Exists fn with
+                            | true ->
+                                let txt = File.ReadAllText fn
+                                File.Delete fn
+                                txt
+                            | false -> ""
                 )
                 |> String.concat ""
                 |> fun txt -> File.WriteAllText(paras.WorkFileDir + logRoot + "All.txt",txt) |> ignore
-                printfn "Finished %s." logRoot
-        )
+                let time = watch.ElapsedMilliseconds
+                printfn "Finished %s in time %.1f s, %d ms per test." logRoot (float time / 1000.0) (int time/ totalNum)) 
             
 
             
     [<EntryPoint>]
     let main _ = 
         let tests = [
-            VRandom.dp3Imms, "dp3Imm";
-            VRandom.dp2Imms, "dp2Imm";
-            VRandom.dp3Shifts,"dp3Shifts";
-            VRandom.dp2Shifts, "dp2Shifts"
+            VTestSpec.dp3Imms, "dp3Imm", 40
+            VTestSpec.dp2Imms, "dp2Imm", 40
+            VTestSpec.dp3Shifts,"dp3Shifts", 150
+            VTestSpec.dp2Shifts, "dp2Shifts", 100
             ]
         let singleMemTests = [
-            VRandom.memSingleTest true, "MemLoads"
-            VRandom.memSingleTest false, "MemStores"
+            VTestSpec.memSingleTest true, "MemLoads", 80
+            VTestSpec.memSingleTest false, "MemStores", 80
             ]
         let multMemTests = [
-            VRandom.memMultiTest true, "MultMemLoads"
-            VRandom.memMultiTest false, "MultMemStores"
+            VTestSpec.memMultiTest true, "MultMemLoads", 80
+            VTestSpec.memMultiTest false, "MultMemStores", 80
             ]
         let branchTests = [
-            VRandom.condBranchTests, "ConditionalBranches"
-            VRandom.computedBranchTests, "ComputedBranches"
+            VTestSpec.condBranchTests, "ConditionalBranches", 300
+            VTestSpec.computedBranchTests, "ComputedBranches", 0
             ]
         initCaches defaultParas
         printfn "Caches initialised"
-        //runTestsInParallel defaultParas singleMemTests 80
-        //runTestsInParallel defaultParas multMemTests 80
-        runTestsInParallel defaultParas branchTests 150
+        [
+            tests
+            singleMemTests
+            multMemTests
+            branchTests
+        ] 
+        |> List.iter (runTestsInParallel defaultParas)
         printfn "Tests completed"
         finaliseCaches defaultParas
         printfn "Caches finalised"
