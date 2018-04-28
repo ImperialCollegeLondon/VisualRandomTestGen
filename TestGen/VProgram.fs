@@ -140,8 +140,9 @@ module VProgram =
             VTestSpec.memMultiTest false, "MultMemStores", 80
             ]
         let branchTests = [
-            VTestSpec.condBranchTests, "ConditionalBranches", 300
+            //VTestSpec.condBranchTests, "ConditionalBranches", 300
             VTestSpec.computedBranchTests, "ComputedBranches", 0
+            VTestSpec.miscTests, "MiscInstr", 0
             ]
         initCaches defaultParas
         printfn "Caches initialised"

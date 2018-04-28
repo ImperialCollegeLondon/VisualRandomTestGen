@@ -27,14 +27,26 @@ module VTestSpec =
             S "TARGET ADD R0, R0, #1"
             ]
         |> GENTESTS
-    
+
+    let miscTests =
+        ASMLINES [
+            S "ADR R0, DAT"
+            S "LDMIA R0, {R1-R6}"
+            S "LDR R7, =TESTEQU"
+            S "DAT DCD 0x12345678"
+            S "DAT1 DCB 3,4,5,6"
+            S "DAT2 DCB 12,13,14,15,16,17,18,19"
+            S "FILL 4"
+            S "DAT4 DCD 111"
+            S "TESTEQU EQU DAT+3"
+            ] |> GENTESTS
 
     let computedBranchTests =
         ASMLINES [
             S "MOV R0, #0"
             S "ADR R1, TARGET"
             S "ADR R2, TARGETADDR"
-            ALLSTRINGS [ "MOV PC, R1"; "MOV R1, PC"; "LDR PC, [R2]"; "STR PC, [R2]" ; "BL TARGET" ]
+            ALLSTRINGS [ "MOV PC, R1"; "MOV R1, PC"; "LDR PC, [R2]"; "STR PC, [R2]" ; "BL TARGET" ; "LDR R4, =TARGET" ]
             S "ADD R0, R0, #1"
             S "ADD R0, R0, #1"
             S "TARGET ADD R0, R0, #1"
