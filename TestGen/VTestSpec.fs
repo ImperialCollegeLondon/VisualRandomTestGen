@@ -34,7 +34,7 @@ module VTestSpec =
             S "MOV R0, #0"
             S "ADR R1, TARGET"
             S "ADR R2, TARGETADDR"
-            ALLSTRINGS [ "MOV PC, R1"; "MOV R1, PC"; "LDR PC, [R2]"; "STR PC, [R2]" ]
+            ALLSTRINGS [ "MOV PC, R1"; "MOV R1, PC"; "LDR PC, [R2]"; "STR PC, [R2]" ; "BL TARGET" ]
             S "ADD R0, R0, #1"
             S "ADD R0, R0, #1"
             S "TARGET ADD R0, R0, #1"
